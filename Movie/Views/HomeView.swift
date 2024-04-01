@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @State private var nowPlayingMovie = ["thor","thor","thor","thor"]
-    
+
     var body: some View {
         NavigationStack{
             ZStack{
@@ -51,7 +51,7 @@ struct HomeView: View {
                     .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
                     
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 30){
+                        HStack(spacing: 20){
                             ForEach(nowPlayingMovie, id: \.self){ movie in
                                 VStack{
                                     Image(movie)
@@ -59,6 +59,11 @@ struct HomeView: View {
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 250)
                                         .cornerRadius(12)
+                                        .scrollTransition(.animated){ content, phase in
+                                            content
+                                                .scaleEffect(phase != .identity ? 0.8 : 1)
+                                                .opacity(phase != .identity ? 0.3 : 1)
+                                        }
                                     
                                     Text("Thor")
                                         .font(.body.bold())
@@ -67,7 +72,8 @@ struct HomeView: View {
                             }
                         }
                     }
-                    .padding()
+                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                    .scrollClipDisabled(true)
                     
                     HStack{
                         Text("Coming soon")
