@@ -9,8 +9,9 @@ import SwiftUI
 
 struct MovieView: View {
     @State private var nowPlayingMovie = ["thor","thor","thor","thor"]
+    @State private var cinema = ["HARTONO MALL CGV", "HARTONO MALL CGV", "HARTONO MALL CGV","HARTONO MALL CGV"]
     @State private var tapped = false
-    @State private var selectedCinema = 0
+    @State private var selectedItemIndex: Int? = nil
     @State private var gradient = [Color.black.opacity(0),Color.black,Color.black,Color.black]
     
     var body: some View {
@@ -129,9 +130,9 @@ struct MovieView: View {
                                     .foregroundStyle(.white)
                                 ScrollView(.vertical){
                                     VStack(alignment:.leading){
-                                        ForEach(0...4, id: \.self){ index in
+                                        ForEach(cinema.indices, id: \.self){ index in
                                             VStack(alignment:.leading){
-                                                Text("HARTONO MALL CGV")
+                                                Text(cinema[index])
                                                     .font(.body.bold())
                                                     .foregroundStyle(.white)
                                                 
@@ -144,8 +145,19 @@ struct MovieView: View {
                                                    alignment: .leading)
                                             .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                                             .background(Color("SectionColor"))
+                                            .overlay{
+                                                self.selectedItemIndex == index ?
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .stroke(Color.yellow, lineWidth: 4)
+                                                :   RoundedRectangle(cornerRadius: 12)
+                                                        .stroke(Color("SectionColor"), lineWidth: 4)
+                                            }
+                                            .overlay{
+                                                self.selectedItemIndex == index ? Color.yellow.opacity(0.1) : nil
+                                            }
                                             .onTapGesture {
-                                                tapped = true
+//                                                tapped = true
+                                                selectedItemIndex = index
                                             }
                                         }
                                         .cornerRadius(12)
