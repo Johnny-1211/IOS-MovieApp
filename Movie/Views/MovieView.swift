@@ -1,9 +1,3 @@
-//
-//  MovieView.swift
-//  Movie
-//
-//  Created by Johnny Tam on 30/3/2024.
-//
 
 import SwiftUI
 
