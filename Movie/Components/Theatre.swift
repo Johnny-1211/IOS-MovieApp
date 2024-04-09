@@ -77,10 +77,3 @@ struct Theatre: View {
     }
 }
 
-
-
-
-#Preview {
-    @State var selectedSeats:[Seat] = []
-    return Theatre(selectedSeats: $selectedSeats)
-}
