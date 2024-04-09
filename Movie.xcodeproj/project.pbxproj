@@ -15,6 +15,10 @@
 		B2880F382BB5102800687B83 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2880F372BB5102800687B83 /* Preview Assets.xcassets */; };
 		B28D89B62BC4B11E002BAEA0 /* SeatChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28D89B52BC4B11E002BAEA0 /* SeatChoiceView.swift */; };
 		B28D89B82BC4B415002BAEA0 /* TicketDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28D89B72BC4B415002BAEA0 /* TicketDate.swift */; };
+		B28D89BA2BC4B58E002BAEA0 /* DateTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28D89B92BC4B58E002BAEA0 /* DateTimeView.swift */; };
+		B28D89BD2BC4B611002BAEA0 /* DateEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28D89BC2BC4B611002BAEA0 /* DateEXT.swift */; };
+		B28D89BF2BC4B9B3002BAEA0 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28D89BE2BC4B9B3002BAEA0 /* DateView.swift */; };
+		B28D89C12BC4C0EA002BAEA0 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28D89C02BC4C0EA002BAEA0 /* TimeView.swift */; };
 		B2E730F22BC10AE500329EA9 /* Theatre.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E730F12BC10AE500329EA9 /* Theatre.swift */; };
 		B2E730F42BC10B5400329EA9 /* ScreenShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E730F32BC10B5400329EA9 /* ScreenShape.swift */; };
 		B2E730F62BC47D1100329EA9 /* Seat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E730F52BC47D1100329EA9 /* Seat.swift */; };
@@ -32,6 +36,10 @@
 		B2880F372BB5102800687B83 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B28D89B52BC4B11E002BAEA0 /* SeatChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatChoiceView.swift; sourceTree = "<group>"; };
 		B28D89B72BC4B415002BAEA0 /* TicketDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketDate.swift; sourceTree = "<group>"; };
+		B28D89B92BC4B58E002BAEA0 /* DateTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeView.swift; sourceTree = "<group>"; };
+		B28D89BC2BC4B611002BAEA0 /* DateEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateEXT.swift; sourceTree = "<group>"; };
+		B28D89BE2BC4B9B3002BAEA0 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		B28D89C02BC4C0EA002BAEA0 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		B2E730F12BC10AE500329EA9 /* Theatre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theatre.swift; sourceTree = "<group>"; };
 		B2E730F32BC10B5400329EA9 /* ScreenShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShape.swift; sourceTree = "<group>"; };
 		B2E730F52BC47D1100329EA9 /* Seat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seat.swift; sourceTree = "<group>"; };
@@ -50,7 +58,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B2134CCA2BB891330003EFB6 /* Views */ = {
+		B2134CCA2BB891330003EFB6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				B2134CD32BB8A3D10003EFB6 /* HomeView.swift */,
@@ -58,7 +66,7 @@
 				B2E730F12BC10AE500329EA9 /* Theatre.swift */,
 				B28D89B52BC4B11E002BAEA0 /* SeatChoiceView.swift */,
 			);
-			path = Views;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		B2134CCD2BB89A6A0003EFB6 /* Models */ = {
@@ -76,6 +84,9 @@
 				B2E730F32BC10B5400329EA9 /* ScreenShape.swift */,
 				B2E730F72BC47D6B00329EA9 /* ChairView.swift */,
 				B2E730F92BC48E4D00329EA9 /* ChairLegend.swift */,
+				B28D89B92BC4B58E002BAEA0 /* DateTimeView.swift */,
+				B28D89BE2BC4B9B3002BAEA0 /* DateView.swift */,
+				B28D89C02BC4C0EA002BAEA0 /* TimeView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -99,9 +110,10 @@
 		B2880F2F2BB5102400687B83 /* Movie */ = {
 			isa = PBXGroup;
 			children = (
+				B28D89BB2BC4B5E5002BAEA0 /* Extension */,
 				B2134CD02BB89B3E0003EFB6 /* Components */,
 				B2134CCD2BB89A6A0003EFB6 /* Models */,
-				B2134CCA2BB891330003EFB6 /* Views */,
+				B2134CCA2BB891330003EFB6 /* Screens */,
 				B2880F302BB5102400687B83 /* MovieApp.swift */,
 				B2880F322BB5102400687B83 /* ContentView.swift */,
 				B2880F342BB5102800687B83 /* Assets.xcassets */,
@@ -116,6 +128,14 @@
 				B2880F372BB5102800687B83 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B28D89BB2BC4B5E5002BAEA0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B28D89BC2BC4B611002BAEA0 /* DateEXT.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,13 +210,17 @@
 			files = (
 				B2134CD42BB8A3D10003EFB6 /* HomeView.swift in Sources */,
 				B2134CD62BB910510003EFB6 /* MovieView.swift in Sources */,
+				B28D89C12BC4C0EA002BAEA0 /* TimeView.swift in Sources */,
+				B28D89BF2BC4B9B3002BAEA0 /* DateView.swift in Sources */,
 				B28D89B82BC4B415002BAEA0 /* TicketDate.swift in Sources */,
 				B2E730F62BC47D1100329EA9 /* Seat.swift in Sources */,
+				B28D89BD2BC4B611002BAEA0 /* DateEXT.swift in Sources */,
 				B2E730F22BC10AE500329EA9 /* Theatre.swift in Sources */,
 				B2E730F82BC47D6B00329EA9 /* ChairView.swift in Sources */,
 				B2E730F42BC10B5400329EA9 /* ScreenShape.swift in Sources */,
 				B28D89B62BC4B11E002BAEA0 /* SeatChoiceView.swift in Sources */,
 				B2880F332BB5102400687B83 /* ContentView.swift in Sources */,
+				B28D89BA2BC4B58E002BAEA0 /* DateTimeView.swift in Sources */,
 				B2E730FA2BC48E4D00329EA9 /* ChairLegend.swift in Sources */,
 				B2880F312BB5102400687B83 /* MovieApp.swift in Sources */,
 			);
