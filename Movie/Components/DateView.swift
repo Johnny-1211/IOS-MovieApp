@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct DateView: View {
-    var date : Date
+    var date : TicketDate
     var isSelected: Bool
-    var onSelect: ((Date)->()) = {_ in }
+    var onSelect: ((TicketDate)->()) = {_ in }
     var body: some View {
         VStack{
             UnevenRoundedRectangle(cornerRadii: .init(
@@ -21,11 +21,11 @@ struct DateView: View {
                     .foregroundStyle(isSelected ? .white : .gray)
             }
             .overlay{
-                Text("\(date)")
+                Text("\(date.month)")
                     .font(.title3.bold())
                     .foregroundStyle(.white)
                     .padding(.bottom, 40)
-                Text("\(date)")
+                Text("\(date.day)")
                     .font(.title3.bold())
                     .foregroundStyle(isSelected ? .black : .white)
                     .padding(.top, 45)

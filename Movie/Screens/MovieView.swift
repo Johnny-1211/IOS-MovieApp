@@ -138,16 +138,10 @@ struct MovieView: View {
                                             .frame(maxWidth: .infinity,
                                                    alignment: .leading)
                                             .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                            .background(Color("SectionColor"))
+                                            .background(self.selectedItemIndex == index ? Color.yellow.opacity(0.3) : Color("sectionColor"))
                                             .overlay{
-                                                self.selectedItemIndex == index ?
                                                     RoundedRectangle(cornerRadius: 12)
-                                                        .stroke(Color.yellow, lineWidth: 4)
-                                                :   RoundedRectangle(cornerRadius: 12)
-                                                        .stroke(Color("SectionColor"), lineWidth: 4)
-                                            }
-                                            .overlay{
-                                                self.selectedItemIndex == index ? Color.yellow.opacity(0.1) : nil
+                                                    .stroke(self.selectedItemIndex == index ? Color.yellow : Color("SectionColor"), lineWidth: 4)
                                             }
                                             .onTapGesture {
 //                                                tapped = true

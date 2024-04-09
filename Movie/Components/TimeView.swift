@@ -4,13 +4,19 @@ struct TimeView: View {
     var index: Int
     var isSelected: Bool
     var onSelect: ((Int)->()) = {_ in }
-var body: some View {
+    var body: some View {
         Text("\(index):00")
-            .foregroundColor(isSelected ? .white : .textColor)
+            .foregroundColor(isSelected ? .orange : .gray)
+            .font(.title3.bold())
             .padding()
-            .background( isSelected ? Color.accent : Color.gray.opacity(0.3))
-            .cornerRadius(10).onTapGesture {
+            .background( isSelected ? Color.orange.opacity(0.3) : Color.gray.opacity(0.3))
+            .cornerRadius(10)
+            .onTapGesture {
                 self.onSelect(self.index)
-        }
+            }
+            .overlay{
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(self.isSelected ? Color.orange : Color("SectionColor"), lineWidth: 2)
+            }
     }
 }

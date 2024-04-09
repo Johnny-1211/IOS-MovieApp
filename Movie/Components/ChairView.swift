@@ -10,7 +10,7 @@ import SwiftUI
 struct ChairView: View {
     
     var width: CGFloat = 50
-    var accentColor: Color = .blue
+    var accentColor: Color = .orange
     var seat = Seat.default
     @State private var isSelected = false
     var isSelectable = true

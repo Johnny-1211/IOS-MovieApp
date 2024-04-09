@@ -37,7 +37,7 @@ struct Theatre: View {
                     ForEach(0..<rows, id: \.self) { row in
                         HStack{
                             ForEach(0..<numbersPerRow, id: \.self){ number in
-                                ChairView(width: 30, accentColor: .accentColor, seat: Seat(id: UUID(), row: row + 1, number: number + 1) , onSelect: { seat in
+                                ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), row: row + 1, number: number + 1) , onSelect: { seat in
                                     self.selectedSeats.append(seat)
                                 }, onDeselect: { seat in
                                     self.selectedSeats.removeAll(where: {$0.id == seat.id})
@@ -49,8 +49,6 @@ struct Theatre: View {
         }
     
     fileprivate func createBackRows() -> some View {
-            
-            
             let rows: Int = 5
             let numbersPerRow: Int = 9
             
@@ -60,7 +58,7 @@ struct Theatre: View {
                     ForEach(0..<rows, id: \.self) { row in
                         HStack{
                             ForEach(0..<numbersPerRow, id: \.self){ number in
-                                ChairView(width: 30, accentColor: .accentColor, seat: Seat(id: UUID(), row: row + 3, number: number + 15) , onSelect: { seat in
+                                ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), row: row + 3, number: number + 15) , onSelect: { seat in
                                     self.selectedSeats.append(seat)
                                 }, onDeselect: { seat in
                                     self.selectedSeats.removeAll(where: {$0.number == seat.number})
@@ -72,7 +70,7 @@ struct Theatre: View {
         }
     fileprivate func createSeatsLegend() -> some View{
         HStack{
-            ChairLegend(text: "Selected", color: .accentColor)
+            ChairLegend(text: "Selected", color: .orange)
             ChairLegend(text: "Reserved", color: .purple)
             ChairLegend(text: "Available", color: .gray)
         }.padding(.horizontal, 20).padding(.top)

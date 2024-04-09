@@ -29,7 +29,7 @@ extension Date{
            for i in range{
                guard let fullDate = calendar.date(byAdding: DateComponents(day: i) , to: Date()) else { continue }
                let d = getComponent(date: fullDate, format: "dd")
-               let m = getComponent(date: fullDate, format: "MM")
+               let m = getComponent(date: fullDate, format: "MMM")
                let y = getComponent(date: fullDate, format: "yy")
                let ticketDate = TicketDate(day: d, month: m, year: y)
                dates.append(ticketDate)
