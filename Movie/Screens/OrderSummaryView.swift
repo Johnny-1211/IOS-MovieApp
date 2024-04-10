@@ -1,6 +1,7 @@
 import SwiftUI
+import UIKit
 
-struct OrderSummeryView: View {
+struct OrderSummaryView: View {
     
     var timerStartd  = false
     
@@ -11,19 +12,24 @@ struct OrderSummeryView: View {
                     Image("thor")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 90 ,height: 100)
+                        .frame(width: 120 ,height: 120)
                         .cornerRadius(12)
                     
                     VStack(alignment: .leading){
                         Text("Movie title")
+                            .foregroundStyle(.orange)
                         Text("Movie type")
+                            .foregroundStyle(.gray)
                         Text("cinema")
-                        Text("bokking date")
+                            .foregroundStyle(.white)
+                        Text("booking date")
+                            .foregroundStyle(.gray)
                     }
+                    .padding(.horizontal,20)
                     Spacer()
                 }
                 .padding(20)
-                .background(.gray)
+                .background(Color("SectionColor"))
                 
                 VStack(alignment:.leading, spacing: 30){
                     HStack{
@@ -37,6 +43,7 @@ struct OrderSummeryView: View {
                     HStack{
                         Text("(ticket number) Ticket")
                             .foregroundStyle(.white)
+                            .font(.body.bold())
                         Spacer()
                         Text("seat number")
                     }
@@ -46,6 +53,7 @@ struct OrderSummeryView: View {
                     
                     HStack{
                         Text("Number of Seat")
+                            .font(.body.bold())
                         Spacer()
                         Text("$30.3")
                         Text("x 3")
@@ -57,6 +65,7 @@ struct OrderSummeryView: View {
                     
                     HStack{
                         Text("Service Fee")
+                            .font(.body.bold())
                             .foregroundStyle(.white)
                         Spacer()
                         Text("$1.3")
@@ -71,6 +80,7 @@ struct OrderSummeryView: View {
                             .font(.system(size: 40))
                             .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 0))
                             .foregroundStyle(.white)
+                        Spacer()
                         VStack(alignment:.leading){
                             Text("MasterCard")
                                 .font(.title3.bold())
@@ -80,9 +90,10 @@ struct OrderSummeryView: View {
                                 .font(.title3)
                                 .foregroundStyle(.gray)
                         }
-                        .padding(.vertical, 20)
-                        .frame(width: 265)
+                        .padding(15)
+                        Spacer()
                     }
+                    .frame(maxWidth: .infinity)
                     .background(Color("SectionColor"))
                     .cornerRadius(12)
                     
@@ -93,30 +104,26 @@ struct OrderSummeryView: View {
                         Spacer()
                         PaymentTimer()
                     }
-                    .frame(width: 320)
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .overlay{
                         Color.orange
                             .opacity(0.3)
                             .cornerRadius(12)
                     }
+                    
                     Button{
                         
                     }label: {
                         Text("Book Now | $30.3 x 3")
                             .font(.body.bold())
-                            .frame(width: 300, height: 50)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 50)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.orange)
-                    .padding()
                 }
                 .padding(20)
-                
-                
-                
-                
-                
                 Spacer()
             }
             .background(.black)
@@ -125,5 +132,5 @@ struct OrderSummeryView: View {
 }
 
 #Preview {
-    OrderSummeryView()
+    OrderSummaryView()
 }
