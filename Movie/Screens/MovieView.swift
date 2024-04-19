@@ -2,8 +2,12 @@
 import SwiftUI
 
 struct MovieView: View {
-    @State private var nowPlayingMovie = ["thor","thor","thor","thor"]
-    @State private var cinema = ["HARTONO MALL CGV", "HARTONO MALL CGV", "HARTONO MALL CGV","HARTONO MALL CGV"]
+    @State private var nowPlayingMovie = ["thor","dune","CivilWar"]
+    @State private var cinema = ["Cineplex Cinemas Yorkdale",
+                                "The Royal","Cineplex Entertainment"]
+    @State private var cinemaAddress = ["3401 Dufferin St, Toronto, ON M6A 2T9",
+                                        "608 College St, Toronto, ON M6G 1B4",
+                                        "1303 Yonge St, Toronto, ON M4T 2Y9"]
     @State private var tapped = false
     @State private var selectedItemIndex: Int? = nil
     @State private var gradient = [Color.black.opacity(0),Color.black,Color.black,Color.black]
@@ -85,39 +89,39 @@ struct MovieView: View {
                                     .font(.body)
                                     .foregroundStyle(.gray)
                                 
-                                Text("Cast")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.white)
-                                
-                                
-                                ScrollView(.horizontal) {
-                                    HStack(spacing: 20){
-                                        ForEach(nowPlayingMovie, id: \.self){ movie in
-                                            Section{
-                                                HStack{
-                                                    Image(movie)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fit)
-                                                        .frame(width: 80)
-                                                        .cornerRadius(12)
-                                                        .scrollTransition(.animated){ content, phase in
-                                                            content
-                                                                .scaleEffect(phase != .identity ? 0.8 : 1)
-                                                                .opacity(phase != .identity ? 0.3 : 1)
-                                                        }
-                                                    Spacer()
-                                                    Text("Tom Holland")
-                                                        .font(.body)
-                                                        .foregroundStyle(.white)
-                                                }
-                                                .padding(EdgeInsets(top: 5 , leading: 10, bottom: 5, trailing: 10))
-                                            }
-                                            .frame(width: 170, height: 75)
-                                            .background(Color("SectionColor"))
-                                            .cornerRadius(12)
-                                        }
-                                    }
-                                }
+//                                Text("Cast")
+//                                    .font(.title3.bold())
+//                                    .foregroundStyle(.white)
+//                                
+//                                
+//                                ScrollView(.horizontal) {
+//                                    HStack(spacing: 20){
+//                                        ForEach(nowPlayingMovie, id: \.self){ movie in
+//                                            Section{
+//                                                HStack{
+//                                                    Image(movie)
+//                                                        .resizable()
+//                                                        .aspectRatio(contentMode: .fit)
+//                                                        .frame(width: 80)
+//                                                        .cornerRadius(12)
+//                                                        .scrollTransition(.animated){ content, phase in
+//                                                            content
+//                                                                .scaleEffect(phase != .identity ? 0.8 : 1)
+//                                                                .opacity(phase != .identity ? 0.3 : 1)
+//                                                        }
+//                                                    Spacer()
+//                                                    Text("Tom Holland")
+//                                                        .font(.body)
+//                                                        .foregroundStyle(.white)
+//                                                }
+//                                                .padding(EdgeInsets(top: 5 , leading: 10, bottom: 5, trailing: 10))
+//                                            }
+//                                            .frame(width: 170, height: 75)
+//                                            .background(Color("SectionColor"))
+//                                            .cornerRadius(12)
+//                                        }
+//                                    }
+//                                }
                                 
                                 Text("Cinema")
                                     .font(.title3.bold())
@@ -130,7 +134,7 @@ struct MovieView: View {
                                                     .font(.body.bold())
                                                     .foregroundStyle(.white)
                                                 
-                                                Text("4.53 Km | Jl. Ring Road Utara Jl. Kaliw")
+                                                Text(cinemaAddress[index])
                                                     .font(.body)
                                                     .foregroundStyle(.gray)
                                             }

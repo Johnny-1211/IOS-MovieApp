@@ -16,13 +16,13 @@ struct OrderSummaryView: View {
                         .cornerRadius(12)
                     
                     VStack(alignment: .leading){
-                        Text("Movie title")
+                        Text("Thor")
                             .foregroundStyle(.orange)
-                        Text("Movie type")
+                        Text("Action, Adventure, Comedy")
                             .foregroundStyle(.gray)
-                        Text("cinema")
+                        Text("Cineplex Cinemas Yorkdale")
                             .foregroundStyle(.white)
-                        Text("booking date")
+                        Text("18-4-2024")
                             .foregroundStyle(.gray)
                     }
                     .padding(.horizontal,20)

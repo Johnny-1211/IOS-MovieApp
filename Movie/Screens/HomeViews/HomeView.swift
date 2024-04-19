@@ -1,15 +1,8 @@
-//
-//  HomeView.swift
-//  Movie
-//
-//  Created by Johnny Tam on 30/3/2024.
-//
-
 import SwiftUI
 
 struct HomeView: View {
     
-    @State private var nowPlayingMovie = ["thor","thor","thor","thor"]
+    @State private var nowPlayingMovie = ["thor","dune","CivilWar"]
 
     var body: some View {
         NavigationStack{
@@ -29,10 +22,10 @@ struct HomeView: View {
                                 .foregroundStyle(.white)
                         }
                         Spacer()
-                        Rectangle()
-                            .frame(width: 50, height: 50)
-                            .foregroundStyle(.white)
-                            .cornerRadius(12)
+//                        Rectangle()
+//                            .frame(width: 50, height: 50)
+//                            .foregroundStyle(.white)
+//                            .cornerRadius(12)
                     }
                     .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                     
@@ -65,7 +58,7 @@ struct HomeView: View {
                                                 .opacity(phase != .identity ? 0.3 : 1)
                                         }
                                     
-                                    Text("Thor")
+                                    Text(movie)
                                         .font(.body.bold())
                                         .foregroundStyle(.white)
                                 }
@@ -101,7 +94,7 @@ struct HomeView: View {
                                             .cornerRadius(12)
                                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
                                         VStack(alignment:.leading,spacing: 10){
-                                            Text("Thor (2022)")
+                                            Text(movie)
                                                 .font(.title3.bold())
                                                 .foregroundStyle(.white)
                                             
