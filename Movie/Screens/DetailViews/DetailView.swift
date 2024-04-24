@@ -2,13 +2,11 @@
 import SwiftUI
 
 struct DetailView: View {
-    @State private var nowPlayingMovie = ["thor","dune","CivilWar"]
     @State private var cinema = ["Cineplex Cinemas Yorkdale",
                                  "The Royal","Cineplex Entertainment"]
     @State private var cinemaAddress = ["3401 Dufferin St, Toronto, ON M6A 2T9",
                                         "608 College St, Toronto, ON M6G 1B4",
                                         "1303 Yonge St, Toronto, ON M4T 2Y9"]
-    @State private var tapped = false
     @State private var selectedItemIndex: Int? = nil
     @State private var gradient = [Color.black.opacity(0),Color.black,Color.black,Color.black]
     
@@ -73,12 +71,12 @@ struct DetailView: View {
                                         })
                                     }
                                     
-                                    Text("Date: \(movie.release_date) || \(movie.runtime)m")
+                                    Text("Date: \(movie.release_date)")
                                         .font(.body)
                                         .foregroundStyle(.gray)
-                                    //                                    Text("Director: Peter")
-                                    //                                        .font(.body)
-                                    //                                        .foregroundStyle(.gray)
+                                    Text("Run Time: \(movie.runtime)m")
+                                        .font(.body)
+                                        .foregroundStyle(.gray)
                                 }
                                 .padding(EdgeInsets(top: 60, leading: 20, bottom: 0, trailing: 20))
                             }
@@ -89,6 +87,7 @@ struct DetailView: View {
                                     Text("Description")
                                         .font(.title3.bold())
                                         .foregroundStyle(.white)
+
                                     
                                     
                                     Text(movie.overview)
@@ -96,39 +95,57 @@ struct DetailView: View {
                                         .font(.body)
                                         .foregroundStyle(.gray)
                                     
-                                    //                                Text("Cast")
-                                    //                                    .font(.title3.bold())
-                                    //                                    .foregroundStyle(.white)
-                                    //
-                                    //
-                                    //                                ScrollView(.horizontal) {
-                                    //                                    HStack(spacing: 20){
-                                    //                                        ForEach(nowPlayingMovie, id: \.self){ movie in
-                                    //                                            Section{
-                                    //                                                HStack{
-                                    //                                                    Image(movie)
-                                    //                                                        .resizable()
-                                    //                                                        .aspectRatio(contentMode: .fit)
-                                    //                                                        .frame(width: 80)
-                                    //                                                        .cornerRadius(12)
-                                    //                                                        .scrollTransition(.animated){ content, phase in
-                                    //                                                            content
-                                    //                                                                .scaleEffect(phase != .identity ? 0.8 : 1)
-                                    //                                                                .opacity(phase != .identity ? 0.3 : 1)
-                                    //                                                        }
-                                    //                                                    Spacer()
-                                    //                                                    Text("Tom Holland")
-                                    //                                                        .font(.body)
-                                    //                                                        .foregroundStyle(.white)
-                                    //                                                }
-                                    //                                                .padding(EdgeInsets(top: 5 , leading: 10, bottom: 5, trailing: 10))
-                                    //                                            }
-                                    //                                            .frame(width: 170, height: 75)
-                                    //                                            .background(Color("SectionColor"))
-                                    //                                            .cornerRadius(12)
-                                    //                                        }
-                                    //                                    }
-                                    //                                }
+                                    Text("Cast")
+                                        .font(.title3.bold())
+                                        .foregroundStyle(.white)
+                                    
+                                    ScrollView(.horizontal) {
+                                        HStack(spacing: 10){
+                                            ForEach(viewModel.movieCast, id: \.self){ cast in
+                                                Section{
+                                                    HStack{
+                                                        if let profile = cast.profile_path {
+                                                            AsyncImage(url: URL(string: imageBaseUrl + (profile))) { image in
+                                                                image
+                                                                    .image?.resizable()
+                                                                    .aspectRatio(contentMode: .fit)
+                                                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                                    .scrollTransition(.animated){ content, phase in
+                                                                        content
+                                                                            .scaleEffect(phase != .identity ? 0.8 : 1)
+                                                                            .opacity(phase != .identity ? 0.3 : 1)
+                                                                    }
+                                                            }
+                                                        }else{
+                                                            Image(systemName: "person.slash.fill")
+                                                                .resizable()
+                                                                .aspectRatio(contentMode: .fit)
+                                                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                                .scrollTransition(.animated){ content, phase in
+                                                                    content
+                                                                        .scaleEffect(phase != .identity ? 0.8 : 1)
+                                                                        .opacity(phase != .identity ? 0.3 : 1)
+                                                                }
+                                                        }
+                                                        
+                                                        Spacer()
+                                                        VStack(alignment: .leading, spacing: 10){
+                                                            Text("Name: \(cast.name)")
+                                                                .font(.system(size: 12))
+                                                                .foregroundStyle(.white)
+                                                            Text("Character: \(cast.character)")
+                                                                .font(.system(size: 12))
+                                                                .foregroundStyle(.white)
+                                                        }
+                                                        Spacer()
+                                                    }
+                                                }
+                                                .frame(width: 220, height: 75)
+                                                .background(Color("SectionColor"))
+                                                .cornerRadius(12)
+                                            }
+                                        }
+                                    }
                                     
                                     Text("Cinema")
                                         .font(.title3.bold())
@@ -149,13 +166,12 @@ struct DetailView: View {
                                                 .frame(maxWidth: .infinity,
                                                        alignment: .leading)
                                                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                                .background(self.selectedItemIndex == index ? Color.yellow.opacity(0.3) : Color("sectionColor"))
+                                                .background(self.selectedItemIndex == index ? Color.yellow.opacity(0.3) : Color("SectionColor"))
                                                 .overlay{
                                                     RoundedRectangle(cornerRadius: 12)
                                                         .stroke(self.selectedItemIndex == index ? Color.yellow : Color("SectionColor"), lineWidth: 4)
                                                 }
                                                 .onTapGesture {
-                                                    //                                                tapped = true
                                                     selectedItemIndex = index
                                                 }
                                             }
@@ -167,17 +183,17 @@ struct DetailView: View {
                             }
                         }
                         
-                        
-                        Button{
-                            
-                        }label: {
+                        NavigationLink {
+                            SeatChoiceView(movieDetail: movie)
+                        } label: {
                             Text("Book Now")
-                                .frame(width: 250,height: 40)
+                                .frame(width: 250,height: 50)
                                 .font(.title3.bold())
+                                .foregroundStyle(.white)
+                                .background(.orange)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
                         }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.orange)
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                 }else{
@@ -195,20 +211,10 @@ struct DetailView: View {
 }
 
 #Preview {
-    @State  var nowPlayingMovie = ["thor","dune","CivilWar"]
-    @State  var cinema = ["Cineplex Cinemas Yorkdale",
-                                 "The Royal","Cineplex Entertainment"]
-    @State  var cinemaAddress = ["3401 Dufferin St, Toronto, ON M6A 2T9",
-                                        "608 College St, Toronto, ON M6G 1B4",
-                                        "1303 Yonge St, Toronto, ON M4T 2Y9"]
-    @State  var tapped = false
-    @State  var selectedItemIndex: Int? = nil
-    @State  var gradient = [Color.black.opacity(0),Color.black,Color.black,Color.black]
-    
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = DetailViewModel()
     @State var movieID : Int = 693134
-
+    
     
     return DetailView(imageBaseUrl: imageBaseUrl, viewModel: viewModel, movieID: movieID)
 }

@@ -4,7 +4,6 @@ struct HomeView: View {
     
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = HomeViewModel()
-    @State private var nowPlayingMovie = ["thor","dune","CivilWar"]
     
     var body: some View {
         NavigationStack{

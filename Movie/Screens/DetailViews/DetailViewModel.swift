@@ -4,12 +4,15 @@ import SwiftUI
 @MainActor final class DetailViewModel : ObservableObject{
     @Published var alertItem : AlertItem?
     @Published var movieDetail : MovieDetail?
+    @Published var movieCast : [Cast] = []
     
     func getMovieDetail(movieID : Int){
         Task{
             do{
                 movieDetail = try await NetworkManager.shared.getMovieDetail(movieID: movieID)
-                print("movieDetail: \(movieDetail)")
+                movieCast = try await NetworkManager.shared.getMovieCredit(movieID: movieID).cast
+                
+                
             }catch{
                 if let moError = error as? MOError{
                     switch moError {
