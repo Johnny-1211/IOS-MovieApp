@@ -8,6 +8,7 @@ struct DetailView: View {
                                         "608 College St, Toronto, ON M6G 1B4",
                                         "1303 Yonge St, Toronto, ON M4T 2Y9"]
     @State private var selectedItemIndex: Int? = nil
+    @State private var selectedCinema = ""
     @State private var gradient = [Color.black.opacity(0),Color.black,Color.black,Color.black]
     
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
@@ -173,6 +174,7 @@ struct DetailView: View {
                                                 }
                                                 .onTapGesture {
                                                     selectedItemIndex = index
+                                                    selectedCinema = cinema[index]
                                                 }
                                             }
                                             .cornerRadius(12)
@@ -184,7 +186,7 @@ struct DetailView: View {
                         }
                         
                         NavigationLink {
-                            SeatChoiceView(movieDetail: movie)
+                            SeatChoiceView(movieDetail: movie, cinema: selectedCinema)
                         } label: {
                             Text("Book Now")
                                 .frame(width: 250,height: 50)

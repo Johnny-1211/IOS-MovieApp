@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B206DCF82BD9F74000E6628F /* SeatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B206DCF72BD9F74000E6628F /* SeatViewModel.swift */; };
 		B2134CD42BB8A3D10003EFB6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2134CD32BB8A3D10003EFB6 /* HomeView.swift */; };
 		B2134CD62BB910510003EFB6 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2134CD52BB910510003EFB6 /* DetailView.swift */; };
 		B25F7C102BD77CC30074C3BD /* Credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25F7C0F2BD77CC30074C3BD /* Credit.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B206DCF72BD9F74000E6628F /* SeatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatViewModel.swift; sourceTree = "<group>"; };
 		B2134CD32BB8A3D10003EFB6 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		B2134CD52BB910510003EFB6 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		B25F7C0F2BD77CC30074C3BD /* Credit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credit.swift; sourceTree = "<group>"; };
@@ -100,12 +102,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B206DCF62BD9F72000E6628F /* SeatViews */ = {
+			isa = PBXGroup;
+			children = (
+				B28D89B52BC4B11E002BAEA0 /* SeatChoiceView.swift */,
+				B206DCF72BD9F74000E6628F /* SeatViewModel.swift */,
+			);
+			path = SeatViews;
+			sourceTree = "<group>";
+		};
 		B2134CCA2BB891330003EFB6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B206DCF62BD9F72000E6628F /* SeatViews */,
 				B299133F2BD0DF1A009368A2 /* HomeViews */,
 				B2F4F6372BD38B91009297B3 /* DetailViews */,
-				B28D89B52BC4B11E002BAEA0 /* SeatChoiceView.swift */,
 				B2D468542BC5BBCF00D830B3 /* OrderSummaryView.swift */,
 				B2D468582BC64C3400D830B3 /* TicketView.swift */,
 			);
@@ -366,6 +377,7 @@
 				B299133E2BD0DF16009368A2 /* HomeViewModel.swift in Sources */,
 				B2E727E52BC7BC040004DBAE /* TicketShape.swift in Sources */,
 				B28D89BF2BC4B9B3002BAEA0 /* DateView.swift in Sources */,
+				B206DCF82BD9F74000E6628F /* SeatViewModel.swift in Sources */,
 				B28D89B82BC4B415002BAEA0 /* TicketDate.swift in Sources */,
 				B2E727DB2BC7AD110004DBAE /* TicketDetailView.swift in Sources */,
 				B2F4F6392BD38C6D009297B3 /* DetailViewModel.swift in Sources */,

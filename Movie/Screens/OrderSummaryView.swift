@@ -2,8 +2,15 @@ import SwiftUI
 import UIKit
 
 struct OrderSummaryView: View {
-    
+    var ticketPrice: Int = 0
+    var randomNum : String = ""
     var timerStartd  = false
+    var movieDetail : MovieDetail?
+    var date: TicketDate?
+    var hour: String = ""
+    var seatCount : Int = 0
+    var cinema:String = ""
+    
     
     var body: some View {
         NavigationStack{
@@ -16,47 +23,47 @@ struct OrderSummaryView: View {
                         .cornerRadius(12)
                     
                     VStack(alignment: .leading){
-                        Text("Thor")
+                        Text(movieDetail!.title)
                             .foregroundStyle(.orange)
-                        Text("Action, Adventure, Comedy")
-                            .foregroundStyle(.gray)
-                        Text("Cineplex Cinemas Yorkdale")
+//                        Text("Action, Adventure, Comedy")
+//                            .foregroundStyle(.gray)
+                        Text(cinema)
                             .foregroundStyle(.white)
-                        Text("18-4-2024")
+                        Text("\(date!.day)-\(date!.month)-\(date!.year)")
                             .foregroundStyle(.gray)
                     }
                     .padding(.horizontal,20)
                     Spacer()
                 }
-                .padding(20)
+                .padding(EdgeInsets(top: 50, leading: 20, bottom: 20, trailing: 20))
                 .background(Color("SectionColor"))
                 
                 VStack(alignment:.leading, spacing: 30){
                     HStack{
                         Text("ORDER NUMBER : ")
                             .foregroundStyle(.white)
-                        Text("12312312312")
+                        Text(randomNum)
                             .font(.body.bold())
                             .foregroundStyle(.gray)
                     }
                     
-                    HStack{
-                        Text("(ticket number) Ticket")
-                            .foregroundStyle(.white)
-                            .font(.body.bold())
-                        Spacer()
-                        Text("seat number")
-                    }
-                    
-                    Divider()
-                        .background(.white)
+//                    HStack{
+//                        Text("(ticket number) Ticket")
+//                            .foregroundStyle(.white)
+//                            .font(.body.bold())
+//                        Spacer()
+//                        Text("seat number")
+//                    }
+//                    
+//                    Divider()
+//                        .background(.white)
                     
                     HStack{
                         Text("Number of Seat")
                             .font(.body.bold())
                         Spacer()
-                        Text("$30.3")
-                        Text("x 3")
+                        Text("$\(ticketPrice) ")
+                        Text("x \(seatCount)")
                     }
                     .foregroundStyle(.white)
                     
@@ -112,16 +119,15 @@ struct OrderSummaryView: View {
                             .cornerRadius(12)
                     }
                     
-                    Button{
-                        
-                    }label: {
-                        Text("Book Now | $30.3 x 3")
-                            .font(.body.bold())
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.orange)
+                    Text("Purchase | $\(ticketPrice * seatCount)")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 60)
+                        .font(.title3.bold())
+                        .foregroundStyle(.white)
+                        .background(.orange)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
+
                 }
                 .padding(20)
                 Spacer()
