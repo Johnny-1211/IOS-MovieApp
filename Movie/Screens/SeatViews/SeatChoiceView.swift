@@ -6,12 +6,11 @@ struct SeatChoiceView: View {
     @State private var showBasket: Bool = false
     @State private var date: TicketDate = TicketDate.default
     @State private var hour: String = ""
-    @State private var showingAlert = false
     @State private var navigateToOrderSummary = false
     @StateObject var viewModel = SeatViewModel()
     var movieDetail: MovieDetail?
     var cinema:String = ""
-    
+                   
     var body: some View {
         NavigationStack{
             VStack{
@@ -26,9 +25,9 @@ struct SeatChoiceView: View {
                             .foregroundStyle(.white)
                     }
                     .padding()
-                    
+                     
                     Spacer()
-                    
+                                
                     NavigationLink(isActive: $navigateToOrderSummary){
                         OrderSummaryView(ticketPrice: viewModel.price,
                                          randomNum: viewModel.randomNum,
@@ -45,25 +44,10 @@ struct SeatChoiceView: View {
                             .background(.orange)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                             .padding()
-                        //                            .onTapGesture {
-                        //                                showingAlert = true
-                        //                                viewModel.generateRandomNumber()
-                        //                            }
                     }
                     .onTapGesture {
-                        showingAlert = true
                         viewModel.generateRandomNumber()
                     }
-                    //                                        .alert(isPresented: $showingAlert){
-                    //                                            Alert(title: Text("Purchase success"),
-                    //                                                  message: Text("Your puchase a ticket of movie - \( String(describing: movieDetail?.title)) at \(hour) on \(date.day)-\(date.month)-\(date.year)"),
-                    //                                                  dismissButton: .default(Text("OK")) {
-                    //                                                navigateToOrderSummary = true
-                    //                                            })
-                    //                                        }
-                    
-                    
-                    
                 }
                 .padding(20)
             }
