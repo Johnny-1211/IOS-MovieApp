@@ -10,7 +10,7 @@ struct SeatChoiceView: View {
     @StateObject var viewModel = SeatViewModel()
     var movieDetail: MovieDetail?
     var cinema:String = ""
-                   
+    
     var body: some View {
         NavigationStack{
             VStack{
@@ -25,9 +25,9 @@ struct SeatChoiceView: View {
                             .foregroundStyle(.white)
                     }
                     .padding()
-                     
+                    
                     Spacer()
-                                
+                    
                     NavigationLink(isActive: $navigateToOrderSummary){
                         OrderSummaryView(ticketPrice: viewModel.price,
                                          randomNum: viewModel.randomNum,
@@ -37,16 +37,18 @@ struct SeatChoiceView: View {
                                          selectedSeats: selectedSeats,
                                          cinema: cinema)
                     } label: {
-                        Text("Buy Ticket")
-                            .frame(width: 200, height: 60)
-                            .font(.title3.bold())
-                            .foregroundStyle(.white)
-                            .background(.orange)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .padding()
-                    }
-                    .onTapGesture {
-                        viewModel.generateRandomNumber()
+                        Button{
+                            viewModel.generateRandomNumber()
+                            navigateToOrderSummary = true
+                        }label: {
+                            Text("Buy Ticket")
+                                .frame(width: 200, height: 60)
+                                .font(.title3.bold())
+                                .foregroundStyle(.white)
+                                .background(.orange)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .padding()
+                        }
                     }
                 }
                 .padding(20)

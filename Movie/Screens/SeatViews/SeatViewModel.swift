@@ -13,5 +13,6 @@ class SeatViewModel : ObservableObject {
             result += "\(digit)"
         }
         randomNum = result
+        print(randomNum)
     }
 }
