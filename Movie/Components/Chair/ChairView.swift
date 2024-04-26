@@ -23,6 +23,9 @@ struct ChairView: View {
                 .frame(width: self.width, height: self.width * 2/3)
                 .foregroundColor(isSelectable ? isSelected ? accentColor : Color.gray.opacity(0.5) : accentColor)
                 .cornerRadius(width / 5)
+                .overlay{
+                    Text("\(seat.number)")
+                }
             
             Rectangle()
                 .frame(width: width - 10, height: width / 5)
