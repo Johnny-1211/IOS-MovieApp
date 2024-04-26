@@ -34,7 +34,7 @@ struct SeatChoiceView: View {
                                          movieDetail: movieDetail,
                                          date: date,
                                          hour: hour,
-                                         seatCount: selectedSeats.count,
+                                         selectedSeats: selectedSeats,
                                          cinema: cinema)
                     } label: {
                         Text("Buy Ticket")
