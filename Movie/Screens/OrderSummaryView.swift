@@ -2,6 +2,8 @@ import SwiftUI
 import UIKit
 
 struct OrderSummaryView: View {
+    @State private var showingAlert = false
+    
     var ticketPrice: Int = 0
     var randomNum : String = ""
     var timerStartd  = false
@@ -25,8 +27,8 @@ struct OrderSummaryView: View {
                     VStack(alignment: .leading){
                         Text(movieDetail!.title)
                             .foregroundStyle(.orange)
-//                        Text("Action, Adventure, Comedy")
-//                            .foregroundStyle(.gray)
+                        //                        Text("Action, Adventure, Comedy")
+                        //                            .foregroundStyle(.gray)
                         Text(cinema)
                             .foregroundStyle(.white)
                         Text("\(date!.day)-\(date!.month)-\(date!.year)")
@@ -47,16 +49,16 @@ struct OrderSummaryView: View {
                             .foregroundStyle(.gray)
                     }
                     
-//                    HStack{
-//                        Text("(ticket number) Ticket")
-//                            .foregroundStyle(.white)
-//                            .font(.body.bold())
-//                        Spacer()
-//                        Text("seat number")
-//                    }
-//                    
-//                    Divider()
-//                        .background(.white)
+                    //                    HStack{
+                    //                        Text("(ticket number) Ticket")
+                    //                            .foregroundStyle(.white)
+                    //                            .font(.body.bold())
+                    //                        Spacer()
+                    //                        Text("seat number")
+                    //                    }
+                    //
+                    //                    Divider()
+                    //                        .background(.white)
                     
                     HStack{
                         Text("Number of Seat")
@@ -127,7 +129,15 @@ struct OrderSummaryView: View {
                         .background(.orange)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
-
+                        .onTapGesture {
+                            showingAlert = true
+                        }
+                        .alert(isPresented: $showingAlert){
+                            Alert(title: Text("Purchase success"),
+                                  message: Text("Your puchase a ticket of movie - \( String(describing: movieDetail?.title)) at \(hour) on \(date!.day)-\(date!.month)-\(date!.year)"),
+                                  dismissButton: .default(Text("OK")))
+                        }
+                    
                 }
                 .padding(20)
                 Spacer()
