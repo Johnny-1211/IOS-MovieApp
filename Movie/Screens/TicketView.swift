@@ -1,17 +1,28 @@
 import SwiftUI
 
 struct TicketView: View {
-    var studioName = "studio"
-    var movieTitle = "ONLY GOD FORGIVES"
-    var imageName = "terminator.jpg"
 
+    var movieDetail : MovieDetail?
+    var date: TicketDate?
+    var hour: String = ""
+    var selectedSeats: [Seat] = []
+    var cinema:String = ""
+    var orderID: String = ""
+    var ticketPrice: Int = 0
+    
     var body: some View {
         ZStack{
             Color.black
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                TopTicketView(studioName: studioName, movieTitle: movieTitle, imageName: imageName)
+                TopTicketView(movieDetail: movieDetail,
+                              date: date, 
+                              hour: hour,
+                              selectedSeats: selectedSeats,
+                              cinema: cinema,
+                              orderID: orderID, 
+                              ticketPrice: ticketPrice)
                     .background(Color.white)
                     .clipShape(TicketShape())
                     .modifier(CardStyleModifier())
@@ -26,8 +37,11 @@ struct TicketView: View {
                     .clipShape(TicketShape().rotation(Angle(degrees: 180)))
                     .modifier(CardStyleModifier())
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.top, 20)
+
         }
+        .navigationBarBackButtonHidden(true)
         
         
     }
