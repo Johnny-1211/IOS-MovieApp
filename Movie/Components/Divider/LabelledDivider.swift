@@ -1,18 +1,28 @@
-//
-//  LabelledDivider.swift
-//  Movie
-//
-//  Created by Johnny Tam on 28/4/2024.
-//
 
 import SwiftUI
 
 struct LabelledDivider: View {
+    let label: String
+    let horizontalPadding: CGFloat
+    let color: Color
+    
+    init(label: String, horizontalPadding: CGFloat = 10, color: Color = .gray) {
+        self.label = label
+        self.horizontalPadding = horizontalPadding
+        self.color = color
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            line
+            Text(label).foregroundColor(color)
+            line
+        }
+    }
+    
+    var line: some View {
+        VStack { Divider().background(color) }.padding(horizontalPadding)
     }
 }
 
-#Preview {
-    LabelledDivider()
-}
+
