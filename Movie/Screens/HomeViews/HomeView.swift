@@ -7,10 +7,9 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack{
+            Color("background").ignoresSafeArea()
+
             ZStack{
-                Color.black
-                    .ignoresSafeArea()
-                
                 NavigationStack{
                     HStack{
                         VStack(alignment: .leading){

@@ -21,7 +21,7 @@ class FireAuthHelper : ObservableObject {
         }
     }
     
-    func signUp(email : String, password : String){
+    func signUp(userName : String, email : String, password : String){
         
         Auth.auth().createUser(withEmail: email, password: password){ [self] authResult, error in
             
@@ -39,9 +39,11 @@ class FireAuthHelper : ObservableObject {
                 print(#function, "Successfully created user account")
                 self.user = authResult?.user
                 
-                //create a document to User_Library collection with user's email
-                //have all the fields empty or with default value
-                //allow the user to input/update their details in the Profile Screen
+                guard let uid = authResult?.user.uid else {return}
+                let data: [String: Any] = [
+                    "uid": uid,
+                    "email": email,
+                    "username": userName]
                 
                 UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
                 UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")

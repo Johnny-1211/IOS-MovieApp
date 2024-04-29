@@ -24,4 +24,22 @@ struct AlertContext {
     static let unableToComplete = AlertItem(title: Text("Server Error"),
                                             message: Text("Unable to complete your request at this time. Please check your internet connection."),
                                             dismissButton: .default(Text("OK")))
+    
+    //MARK: - Login / Sign Up Alert
+    static let emptyField = AlertItem(title: Text("Invaild Input"),
+                                       message: Text("Please fill in all the required fields."),
+                                       dismissButton: .default(Text("OK")))
+    
+    static let invaildLogin = AlertItem(title: Text("Invaild Login"),
+                                       message: Text("Username or password is incorrect. Please try again."),
+                                       dismissButton: .default(Text("OK")))
+    
+    static let invaildRegistration = AlertItem(title: Text("Invalid Registration"),
+                                               message: Text("Please make sure your password and confirm password match, and all fields are filled."),
+                                               dismissButton: .default(Text("OK")))
+    
+    static let registrateSuccess = AlertItem(title: Text("Success"),
+                                               message: Text("Your account has been created successfully."),
+                                               dismissButton: .default(Text("OK")))
+    
 }
