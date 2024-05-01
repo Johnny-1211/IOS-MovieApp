@@ -10,7 +10,8 @@ struct SignUpView: View {
     @State private var confirmPassword : String = ""
     
     @State private var createAccount = false
-    @State private var alertItem: AlertItem?
+    @State private var showAlert = false
+    @State private var alertCategory = ""
     
     var body: some View {
         ZStack{
@@ -54,14 +55,17 @@ struct SignUpView: View {
                         if (!self.userName.isEmpty && !self.email.isEmpty && !self.password.isEmpty && !self.confirmPassword.isEmpty){
                             if (self.password == self.confirmPassword){
                                 self.fireAuthHelper.signUp(userName: self.userName, email: self.email, password: self.confirmPassword)
-                                alertItem = AlertContext.registrateSuccess
+                                alertCategory = "registrateSuccess"
+                                showAlert = true
                                 self.rootScreen = .Home
                                 
                             } else{
-                                alertItem = AlertContext.invaildRegistration
+                                alertCategory = "invaildRegistration"
+                                showAlert = true
                             }
                         }else{
-                            alertItem = AlertContext.emptyField
+                            alertCategory = "emptyField"
+                            showAlert = true
                             print(#function, "email and password cannot be empty")
                         }
                     }){
@@ -75,16 +79,30 @@ struct SignUpView: View {
                     }
                     .padding(.vertical, 10)
                 }
-                .padding(.horizontal,20)
-                .alert(item: $alertItem){ alert in
-                    Alert(title: alert.title,
-                          message: alert.message,
-                          dismissButton: alert.dismissButton)
+                .alert(isPresented: $showAlert) {
+                    switch alertCategory {
+                    case "registrateSuccess":
+                        return Alert(title: AlertContext.registrateSuccess.title,
+                                     message: AlertContext.registrateSuccess.message,
+                                     dismissButton: AlertContext.registrateSuccess.dismissButton)
+                        
+                    case "invaildRegistration":
+                        return Alert(title: AlertContext.invaildRegistration.title,
+                                     message: AlertContext.invaildRegistration.message,
+                                     dismissButton: AlertContext.invaildRegistration.dismissButton)
+                        
+                    case "emptyField":
+                        return Alert(title: AlertContext.emptyField.title,
+                                     message: AlertContext.emptyField.message,
+                                     dismissButton: AlertContext.emptyField.dismissButton)
+                    default:
+                        return Alert(title: Text(""), message: nil)
+                    }
                 }
+                .padding(.horizontal,20)
             } //VStack ends
             .navigationTitle("Registration")
             .navigationBarTitleDisplayMode(.inline)
-
         } // zstack
     }
 }

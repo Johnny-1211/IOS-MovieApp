@@ -5,8 +5,11 @@ struct LoginView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
     @Binding var rootScreen : RootView
     
+    
     @State private var email : String = ""
     @State private var password : String = ""
+    @State private var showAlert = false
+    @State private var alertCategory = ""
     
     
     var body: some View {
@@ -36,17 +39,13 @@ struct LoginView: View {
                             .disableAutocorrection(true)
                             .textInputAutocapitalization(.never)
                         Button(action: {
-                            //validate the data
                             if (!self.email.isEmpty && !self.password.isEmpty){
-                                
-                                //validate credentials
-                                self.fireAuthHelper.signIn(email: self.email, password: self.password)
+                                self.fireAuthHelper.signIn(email: self.email, password: self.password, rootScreen: $rootScreen)
                                 self.fireDBHelper.getAllMovies()
-                                
-                                //navigate to home screen
-                                self.rootScreen = .Home
+
                             }else{
-                                //trigger alert displaying errors
+                                self.showAlert = true
+                                alertCategory = "invaildLogin"
                                 print(#function, "email and password cannot be empty")
                             }
                         }){
@@ -61,6 +60,16 @@ struct LoginView: View {
                         .padding(.vertical, 10)
                         
                         LabelledDivider(label: "OR")
+                    }
+                    .alert(isPresented: $showAlert) {
+                        switch alertCategory {
+                        case "invaildLogin":
+                            return Alert(title: AlertContext.invaildLogin.title,
+                                         message: AlertContext.invaildLogin.message,
+                                         dismissButton: AlertContext.invaildLogin.dismissButton)
+                        default:
+                            return Alert(title: Text(""), message: nil)
+                        }
                     }
                     .padding(.horizontal,20)
                     HStack{
@@ -79,14 +88,12 @@ struct LoginView: View {
             } //VStack ends
             .navigationTitle("Login")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear{
-                self.email = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
-                self.password = UserDefaults.standard.string(forKey: "KEY_PASSWORD") ?? ""
-            }
+            
+            //            .onAppear{
+            //                self.email = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
+            //                self.password = UserDefaults.standard.string(forKey: "KEY_PASSWORD") ?? ""
+            //            }
+            
         } // zstack
-        
-        
-        
-        
     }
 }

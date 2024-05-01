@@ -11,8 +11,10 @@ struct MoviesTabView: View {
             TabView {
                 HomeView()
                     .tabItem { Label("Home", systemImage: "house").padding(.top, 5) }
-                AccountView()
+                AccountView(rootScreen: $rootScreen)
                     .tabItem { Label("Account", systemImage: "person").padding(.top, 5) }
+                    .environmentObject(fireDBHelper)
+                    .environmentObject(fireAuthHelper)
                 OrderListView()
                     .tabItem { Label("Order", systemImage: "bag").padding(.top, 5) }
             }

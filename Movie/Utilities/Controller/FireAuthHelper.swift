@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import FirebaseAuth
 
 class FireAuthHelper : ObservableObject {
@@ -12,11 +13,8 @@ class FireAuthHelper : ObservableObject {
     func listenToAuthState(){
         Auth.auth().addStateDidChangeListener{ [weak self] _, user in
             guard let self = self else{
-                //no change in the auth state
                 return
             }
-            
-            //user's auth state has changed
             self.user = user
         }
     }
@@ -45,17 +43,16 @@ class FireAuthHelper : ObservableObject {
                     "email": email,
                     "username": userName]
                 
-                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
-                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
+//                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
+//                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
             }
             
         }
     }
     
-    func signIn(email : String, password : String){
+    func signIn(email : String, password : String, rootScreen: Binding<RootView>){
         
         Auth.auth().signIn(withEmail: email, password: password){ [self] authResult, error in
-            
             guard let result = authResult else{
                 print(#function, "Error while logging in : \(error)")
                 return
@@ -66,16 +63,17 @@ class FireAuthHelper : ObservableObject {
             switch authResult{
             case .none:
                 print(#function, "Unable to sign in")
+                return
             case .some(_):
                 print(#function, "Login Successful")
                 self.user = authResult?.user
                 
                 print(#function, "Logged in user : \(self.user?.displayName ?? "NA" )")
-                
-                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
-                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
+                rootScreen.wrappedValue = .Home
+                return
+//                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
+//                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
             }
-            
         }
         
     }
