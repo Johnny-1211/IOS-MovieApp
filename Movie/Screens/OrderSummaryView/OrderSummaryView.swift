@@ -2,12 +2,13 @@ import SwiftUI
 import UIKit
 
 struct OrderSummaryView: View {
+    @EnvironmentObject var fireDBHelper : FireDBHelper
+    
     @State private var showingAlert = false
     @State private var generateTicket = false
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
-    
     var ticketPrice: Int = 0
-    var randomNum : String = ""
+    var orderNum : String = ""
     var timerStartd  = false
     var movieDetail : MovieDetail?
     var date: TicketDate?
@@ -46,7 +47,7 @@ struct OrderSummaryView: View {
                     HStack{
                         Text("ORDER NUMBER : ")
                             .foregroundStyle(.white)
-                        Text(randomNum)
+                        Text(orderNum)
                             .font(.body.bold())
                             .foregroundStyle(.gray)
                     }
@@ -101,7 +102,7 @@ struct OrderSummaryView: View {
                                 .font(.title3.bold())
                                 .foregroundStyle(.white)
                             
-                            Text("**** **** 1234 5678")
+                            Text("**** **** 3823 7240")
                                 .font(.title3)
                                 .foregroundStyle(.gray)
                         }
@@ -134,11 +135,20 @@ struct OrderSummaryView: View {
                                        hour: hour,
                                        selectedSeats: selectedSeats,
                                        cinema: cinema,
-                                       orderID: randomNum,
+                                       orderID: orderNum,
                                        ticketPrice: ticketPrice),
                         isActive: $generateTicket
                     ){
                         Button{
+                            let date = "\(date!.day)-\(date!.month)-\(date!.year)"
+                            let newMovieOrder = MovieOrder(title: movieDetail?.title ?? "",
+                                                           orderNum: orderNum,
+                                                           date: date,
+                                                           hour: hour,
+                                                           selectedSeats: selectedSeats,
+                                                           cinema: cinema,
+                                                           ticketPrice: ticketPrice)
+                            fireDBHelper.insertMovie(newMovie: newMovieOrder)
                             showingAlert = true
                         }label: {
                             Text("Purchase | $\(ticketPrice * selectedSeats.count)")

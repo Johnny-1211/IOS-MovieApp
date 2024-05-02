@@ -2,6 +2,8 @@
 import SwiftUI
 
 struct DetailView: View {
+    @EnvironmentObject var fireDBHelper : FireDBHelper
+    
     @State private var cinema = ["Cineplex Cinemas Yorkdale",
                                  "The Royal","Cineplex Entertainment"]
     @State private var cinemaAddress = ["3401 Dufferin St, Toronto, ON M6A 2T9",
@@ -32,22 +34,22 @@ struct DetailView: View {
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     
                     VStack(spacing:0.0){
-                        HStack{
-                            Circle()
-                                .fill(.gray)
-                                .frame(width: 45)
-                                .foregroundStyle(.white)
-                                .overlay{
-                                    Button{
-                                        
-                                    } label: {
-                                        Image(systemName: "arrow.left")
-                                            .foregroundStyle(.white)
-                                    }
-                                }
-                            Spacer()
-                        }
-                        .padding(EdgeInsets(top: 46, leading: 20, bottom: 0, trailing: 20))
+//                        HStack{
+//                            Circle()
+//                                .fill(.gray)
+//                                .frame(width: 45)
+//                                .foregroundStyle(.white)
+//                                .overlay{
+//                                    Button{
+//                                        
+//                                    } label: {
+//                                        Image(systemName: "arrow.left")
+//                                            .foregroundStyle(.white)
+//                                    }
+//                                }
+//                            Spacer()
+//                        }
+//                        .padding(EdgeInsets(top: 46, leading: 20, bottom: 0, trailing: 20))
                         
                         
                         Rectangle()
@@ -187,6 +189,8 @@ struct DetailView: View {
                         
                         NavigationLink {
                             SeatChoiceView(movieDetail: movie, cinema: selectedCinema)
+                                .environmentObject(fireDBHelper)
+
                         } label: {
                             Text("Book Now")
                                 .frame(width: 250,height: 50)
@@ -207,7 +211,7 @@ struct DetailView: View {
             }
             .background(.black)
             .ignoresSafeArea()
-            .navigationBarBackButtonHidden(true)
+//            .navigationBarBackButtonHidden(true)
         }
     }
 }

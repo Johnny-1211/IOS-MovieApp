@@ -1,19 +1,20 @@
 import SwiftUI
+import FirebaseAuth
 
 struct HomeView: View {
-    
+    @EnvironmentObject var fireDBHelper : FireDBHelper
+
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = HomeViewModel()
     
     var body: some View {
         NavigationStack{
-            Color("background").ignoresSafeArea()
-
             ZStack{
+                Color("background").ignoresSafeArea()
                 NavigationStack{
                     HStack{
                         VStack(alignment: .leading){
-                            Text("Welcome Johnny👋")
+                            Text("Welcome \(Auth.auth().currentUser?.displayName ?? "Guest")👋")
                                 .font(.body)
                                 .foregroundStyle(.gray)
                             
@@ -22,10 +23,6 @@ struct HomeView: View {
                                 .foregroundStyle(.white)
                         }
                         Spacer()
-                        //                        Rectangle()
-                        //                            .frame(width: 50, height: 50)
-                        //                            .foregroundStyle(.white)
-                        //                            .cornerRadius(12)
                     }
                     .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                     
@@ -50,6 +47,8 @@ struct HomeView: View {
                                 ForEach(viewModel.nowplayingMovie, id: \.self){ movie in
                                     NavigationLink {
                                         DetailView(movieID: movie.id)
+                                            .environmentObject(fireDBHelper)
+
                                     } label: {
                                         VStack{
                                             AsyncImage(url: URL(string: imageBaseUrl + movie.poster_path)) { image in

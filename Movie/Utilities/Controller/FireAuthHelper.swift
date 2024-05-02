@@ -69,10 +69,11 @@ class FireAuthHelper : ObservableObject {
                 self.user = authResult?.user
                 
                 print(#function, "Logged in user : \(self.user?.displayName ?? "NA" )")
+                
+                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
+                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
                 rootScreen.wrappedValue = .Home
-                return
-//                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
-//                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
+                
             }
         }
         

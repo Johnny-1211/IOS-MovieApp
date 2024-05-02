@@ -2,6 +2,8 @@
 import SwiftUI
 
 struct SeatChoiceView: View {
+    @EnvironmentObject var fireDBHelper : FireDBHelper
+    
     @State private var selectedSeats: [Seat] = []
     @State private var showBasket: Bool = false
     @State private var date: TicketDate = TicketDate.default
@@ -30,12 +32,14 @@ struct SeatChoiceView: View {
                     
                     NavigationLink(isActive: $navigateToOrderSummary){
                         OrderSummaryView(ticketPrice: viewModel.price,
-                                         randomNum: viewModel.randomNum,
+                                         orderNum: viewModel.randomNum,
                                          movieDetail: movieDetail,
                                          date: date,
                                          hour: hour,
                                          selectedSeats: selectedSeats,
                                          cinema: cinema)
+                        .environmentObject(fireDBHelper)
+
                     } label: {
                         Button{
                             viewModel.generateRandomNumber()

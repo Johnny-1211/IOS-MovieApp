@@ -3,6 +3,7 @@ import FirebaseFirestore
 
 class FireDBHelper : ObservableObject {
     @Published var movieOrder = [MovieOrder]()
+    var fireAuthHelper = FireAuthHelper()
     
     private let db : Firestore
     private static var shared : FireDBHelper?
@@ -21,9 +22,7 @@ class FireDBHelper : ObservableObject {
         return shared!
     }
     
-    
-    func insertBook(newMovie : MovieOrder){
-        
+    func insertMovie(newMovie : MovieOrder){
         let loggedInUserEmail = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
         
         if (loggedInUserEmail.isEmpty){

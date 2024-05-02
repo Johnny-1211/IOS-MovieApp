@@ -11,6 +11,8 @@ struct MoviesTabView: View {
             TabView {
                 HomeView()
                     .tabItem { Label("Home", systemImage: "house").padding(.top, 5) }
+                    .environmentObject(fireDBHelper)
+
                 AccountView(rootScreen: $rootScreen)
                     .tabItem { Label("Account", systemImage: "person").padding(.top, 5) }
                     .environmentObject(fireDBHelper)
