@@ -15,7 +15,12 @@ struct SeatChoiceView: View {
     
     var body: some View {
         NavigationStack{
-            VStack{
+            VStack(spacing: 0.0){
+                HStack{
+                    BackBtn()
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
                 Theatre(selectedSeats: $selectedSeats)
                 DateTimeView(date: self.$date, hour: self.$hour)
                 HStack{
@@ -58,6 +63,8 @@ struct SeatChoiceView: View {
                 .padding(20)
             }
             .background(.black)
+            .navigationBarBackButtonHidden(true)
+
         }
     }
 }

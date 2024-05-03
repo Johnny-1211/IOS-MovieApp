@@ -18,29 +18,32 @@ struct OrderSummaryView: View {
     
     var body: some View {
         NavigationStack{
-            VStack(alignment: .leading){
-                HStack{
-                    AsyncImage(url: URL(string: imageBaseUrl + (movieDetail!.poster_path))) { image in
-                        image
-                            .image?.resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150 ,height: 150)
-                            .cornerRadius(12)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 10){
-                        Text(movieDetail!.title)
-                            .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 0.0){
+                VStack(alignment: .leading){
+                    BackBtn()
+                        .padding(.horizontal, 20)
+                    HStack{
+                        AsyncImage(url: URL(string: imageBaseUrl + (movieDetail!.poster_path))) { image in
+                            image
+                                .image?.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150 ,height: 150)
+                                .cornerRadius(12)
+                        }
                         
-                        Text(cinema)
-                            .foregroundStyle(.white)
-                        Text("\(date!.day)-\(date!.month)-\(date!.year)")
-                            .foregroundStyle(.gray)
+                        VStack(alignment: .leading, spacing: 10){
+                            Text(movieDetail!.title)
+                                .foregroundStyle(.orange)
+                            
+                            Text(cinema)
+                                .foregroundStyle(.white)
+                            Text("\(date!.day)-\(date!.month)-\(date!.year)")
+                                .foregroundStyle(.gray)
+                        }
+                        Spacer()
                     }
-                    //                    .padding(.horizontal,20)
-                    Spacer()
+                    .padding(EdgeInsets(top: 20, leading: 20, bottom: 10, trailing: 20))
                 }
-                .padding(EdgeInsets(top: 20, leading: 20, bottom: 10, trailing: 20))
                 .background(Color("SectionColor"))
                 
                 VStack(alignment:.leading, spacing: 20){
@@ -112,22 +115,6 @@ struct OrderSummaryView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color("SectionColor"))
                     .cornerRadius(12)
-                    
-                    //                    HStack{
-                    //                        Text("Complete your payment in")
-                    //                            .font(.body.bold())
-                    //                            .foregroundStyle(.white)
-                    //                        Spacer()
-                    //                        PaymentTimer()
-                    //                    }
-                    //                    .frame(maxWidth: .infinity)
-                    //                    .padding()
-                    //                    .overlay{
-                    //                        Color.orange
-                    //                            .opacity(0.3)
-                    //                            .cornerRadius(12)
-                    //                    }
-                    
                     NavigationLink(
                         destination:
                             TicketView(movieDetail: movieDetail,
@@ -174,6 +161,8 @@ struct OrderSummaryView: View {
                 Spacer()
             }
             .background(.black)
+            .navigationBarBackButtonHidden(true)
+
         }
     }
 }
