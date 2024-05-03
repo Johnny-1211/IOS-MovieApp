@@ -58,7 +58,7 @@ struct OrderSummaryView: View {
                             .font(.body.bold())
                         Spacer()
                         ForEach(selectedSeats) {seat in
-                            Text("\(seat.row)\(seat.number)")
+                            Text("\(seat.seatNum)")
                                 .font(.body.bold())
                                 .foregroundStyle(.gray)
                         }
@@ -147,7 +147,8 @@ struct OrderSummaryView: View {
                                                            hour: hour,
                                                            selectedSeats: selectedSeats,
                                                            cinema: cinema,
-                                                           ticketPrice: ticketPrice)
+                                                           ticketPrice: ticketPrice,
+                                                           image:  movieDetail?.poster_path ?? "")
                             fireDBHelper.insertMovie(newMovie: newMovieOrder)
                             showingAlert = true
                         }label: {

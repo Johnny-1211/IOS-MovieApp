@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ScreenShape: Shape {
-    var screenCurveture: CGFloat = 50
+    var screenCurveture: CGFloat = 40
         var isClip = false
         
         func path(in rect: CGRect) -> Path {

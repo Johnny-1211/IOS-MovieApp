@@ -27,58 +27,50 @@ struct Theatre: View {
     }
     
     fileprivate func createFrontRows() -> some View {
-            
-            let rows: Int = 2
-            let rowMark = ["A", "B"]
-            let numbersPerRow: Int = 7
-            
-            return
-                
-                VStack {
-                    ForEach(0..<rows, id: \.self) { row in
-                        HStack{
-                            Text(rowMark[row])
-                                .foregroundStyle(.white)
-                                .padding(.leading, 5)
-                            ForEach(0..<numbersPerRow, id: \.self){ number in
-                                ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), row: rowMark[row], number: number + 1) , onSelect: { seat in
-                                    self.selectedSeats.append(seat)
-                                }, onDeselect: { seat in
-                                    self.selectedSeats.removeAll(where: {$0.id == seat.id})
-                                })
-                            }
-                            
-                        }
-                        .padding(.trailing,25)
+        
+        let rows: Int = 2
+        let rowMark = ["A", "B"]
+        let numbersPerRow: Int = 7
+        
+        return
+        
+        VStack {
+            ForEach(0..<rows, id: \.self) { row in
+                HStack{
+                    ForEach(0..<numbersPerRow, id: \.self){ number in
+                        ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)") , onSelect: { seat in
+                            self.selectedSeats.append(seat)
+                        }, onDeselect: { seat in
+                            self.selectedSeats.removeAll(where: {$0.id == seat.id})
+                        })
                     }
+                }
             }
         }
+    }
     
     fileprivate func createBackRows() -> some View {
-            let rows: Int = 5
-            let rowMark = ["C", "D","E","F","G"]
-            let numbersPerRow: Int = 9
-            
-            return
-                
+        let rows: Int = 5
+        let rowMark = ["C", "D","E","F","G"]
+        let numbersPerRow: Int = 9
+        
+        return
+        
         VStack{
-                    ForEach(0..<rows, id: \.self) { row in
-                        HStack{
-                            Text(rowMark[row])
-                                .foregroundStyle(.white)
-                                .padding(.leading, 5)
-                            ForEach(0..<numbersPerRow, id: \.self){ number in
-                                ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), row: rowMark[row], number: number + 1) , onSelect: { seat in
-                                    self.selectedSeats.append(seat)
-                                }, onDeselect: { seat in
-                                    self.selectedSeats.removeAll(where: {$0.number == seat.number})
-                                })
-                            }
-                        }
-                        .padding(.trailing, 23)
+            ForEach(0..<rows, id: \.self) { row in
+                HStack{
+                    ForEach(0..<numbersPerRow, id: \.self){ number in
+                        ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)") , onSelect: { seat in
+                            self.selectedSeats.append(seat)
+                        }, onDeselect: { seat in
+                            self.selectedSeats.removeAll(where: {$0.id == seat.id})
+                        })
                     }
+                }
             }
         }
+    }
+    
     fileprivate func createSeatsLegend() -> some View{
         HStack{
             ChairLegend(text: "Selected", color: .orange)
@@ -86,5 +78,10 @@ struct Theatre: View {
             ChairLegend(text: "Available", color: .gray)
         }.padding(.horizontal, 20).padding(.top)
     }
+}
+
+#Preview {
+    @State var selectedSeats : [Seat] = []
+    return Theatre(selectedSeats: $selectedSeats)
 }
 

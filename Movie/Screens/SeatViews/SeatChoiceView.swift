@@ -62,6 +62,3 @@ struct SeatChoiceView: View {
     }
 }
 
-#Preview {
-    SeatChoiceView()
-}

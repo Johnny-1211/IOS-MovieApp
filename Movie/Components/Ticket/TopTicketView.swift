@@ -58,7 +58,7 @@ struct TopTicketView: View {
                                 .foregroundColor(Color.gray)
                             HStack{
                                 ForEach(selectedSeats) {seat in
-                                    Text("\(seat.row)\(String(seat.number))")
+                                    Text("\(seat.seatNum)")
                                         .font(.system(size: 18, weight: .black))
                                 }
                             }

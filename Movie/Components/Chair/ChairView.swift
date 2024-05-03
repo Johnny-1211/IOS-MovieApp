@@ -1,10 +1,3 @@
-//
-//  ChairView.swift
-//  Movie
-//
-//  Created by Johnny Tam on 8/4/2024.
-//
-
 import SwiftUI
 
 struct ChairView: View {
@@ -24,7 +17,7 @@ struct ChairView: View {
                 .foregroundColor(isSelectable ? isSelected ? accentColor : Color.gray.opacity(0.5) : accentColor)
                 .cornerRadius(width / 5)
                 .overlay{
-                    Text("\(seat.number)")
+                    Text("\(seat.seatNum)")
                 }
             
             Rectangle()
@@ -45,6 +38,3 @@ struct ChairView: View {
     }
 }
 
-#Preview {
-    ChairView()
-}
