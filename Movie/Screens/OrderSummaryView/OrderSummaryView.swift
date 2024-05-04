@@ -7,6 +7,9 @@ struct OrderSummaryView: View {
     @State private var showingAlert = false
     @State private var generateTicket = false
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
+    @Binding var rootScreen : RootView
+
+    @State var movieOrder : MovieOrder?
     var ticketPrice: Int = 0
     var orderNum : String = ""
     var timerStartd  = false
@@ -117,26 +120,20 @@ struct OrderSummaryView: View {
                     .cornerRadius(12)
                     NavigationLink(
                         destination:
-                            TicketView(movieDetail: movieDetail,
-                                       date: date,
-                                       hour: hour,
-                                       selectedSeats: selectedSeats,
-                                       cinema: cinema,
-                                       orderID: orderNum,
-                                       ticketPrice: ticketPrice),
+                            TicketView(movieOrder: movieOrder),
                         isActive: $generateTicket
                     ){
                         Button{
-                            let date = "\(date!.day)-\(date!.month)-\(date!.year)"
-                            let newMovieOrder = MovieOrder(title: movieDetail?.title ?? "",
-                                                           orderNum: orderNum,
-                                                           date: date,
-                                                           hour: hour,
-                                                           selectedSeats: selectedSeats,
-                                                           cinema: cinema,
-                                                           ticketPrice: ticketPrice,
-                                                           image:  movieDetail?.poster_path ?? "")
-                            fireDBHelper.insertMovie(newMovie: newMovieOrder)
+//                            let date = "\(date!.day)-\(date!.month)-\(date!.year)"
+//                            let newMovieOrder = MovieOrder(title: movieDetail?.title ?? "",
+//                                                           orderNum: orderNum,
+//                                                           date: date,
+//                                                           hour: hour,
+//                                                           selectedSeats: selectedSeats,
+//                                                           cinema: cinema,
+//                                                           ticketPrice: ticketPrice,
+//                                                           image:  movieDetail?.poster_path ?? "")
+                            fireDBHelper.insertMovie(newMovie: movieOrder!)
                             showingAlert = true
                         }label: {
                             Text("Purchase | $\(ticketPrice * selectedSeats.count)")
@@ -162,6 +159,17 @@ struct OrderSummaryView: View {
             }
             .background(.black)
             .navigationBarBackButtonHidden(true)
+            .onAppear {
+                let date = "\(date!.day)-\(date!.month)-\(date!.year)"
+                movieOrder = MovieOrder(title: movieDetail?.title ?? "",
+                                        orderNum: orderNum,
+                                        date: date,
+                                        hour: hour,
+                                        selectedSeats: selectedSeats,
+                                        cinema: cinema,
+                                        ticketPrice: ticketPrice,
+                                        image:  movieDetail?.poster_path ?? "")
+            }
 
         }
     }

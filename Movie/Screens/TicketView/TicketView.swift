@@ -1,28 +1,16 @@
 import SwiftUI
 
 struct TicketView: View {
-
-    var movieDetail : MovieDetail?
-    var date: TicketDate?
-    var hour: String = ""
-    var selectedSeats: [Seat] = []
-    var cinema:String = ""
-    var orderID: String = ""
-    var ticketPrice: Int = 0
+//    @Binding var rootScreen : RootView
+    var movieOrder: MovieOrder?
     
     var body: some View {
         ZStack{
             Color.black
                 .ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                TopTicketView(movieDetail: movieDetail,
-                              date: date, 
-                              hour: hour,
-                              selectedSeats: selectedSeats,
-                              cinema: cinema,
-                              orderID: orderID, 
-                              ticketPrice: ticketPrice)
+            VStack(spacing: 0.0) {
+                TopTicketView(movieOrder: movieOrder)
                     .background(Color.white)
                     .clipShape(TicketShape())
                     .modifier(CardStyleModifier())
@@ -38,15 +26,10 @@ struct TicketView: View {
                     .modifier(CardStyleModifier())
             }
             .padding(.horizontal)
-            .padding(.top, 20)
-
+            .padding(.top, 25)
         }
         .navigationBarBackButtonHidden(true)
         
         
     }
-}
-
-#Preview {
-    TicketView()
 }

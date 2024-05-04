@@ -9,7 +9,9 @@ struct OrderListView: View {
             ScrollView{
                 VStack{
                     ForEach(self.orderList) { currentOrder in
-                        MovieOrderListCell(movieOrder: currentOrder)
+                        NavigationLink(destination: TicketView(movieOrder: currentOrder), label: {
+                            MovieOrderListCell(movieOrder: currentOrder)
+                        })
                     }
                 }
             }
