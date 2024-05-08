@@ -3,6 +3,7 @@ import SwiftUI
 
 struct DetailView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
+    @EnvironmentObject var router: Router
 
     @State private var cinema = ["Cineplex Cinemas Yorkdale",
                                  "The Royal","Cineplex Entertainment"]
@@ -16,7 +17,7 @@ struct DetailView: View {
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = DetailViewModel()
     var movieID : Int = 0
-    
+        
     var body: some View {
         NavigationStack{
             ZStack{
@@ -179,15 +180,12 @@ struct DetailView: View {
                         NavigationLink {
                             SeatChoiceView(movieDetail: movie, cinema: selectedCinema)
                                 .environmentObject(fireDBHelper)
+                                .environmentObject(router)
+
 
                         } label: {
-                            Text("Book Now")
-                                .frame(width: 250,height: 50)
-                                .font(.title3.bold())
-                                .foregroundStyle(.white)
-                                .background(.orange)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
+                            ConfirmBtn(text: "Book Now", width: 250, height: 50, top: 10, leading: 0, bottom: 20, trailing: 0)
+
                         }
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
@@ -205,11 +203,3 @@ struct DetailView: View {
     }
 }
 
-#Preview {
-    @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
-    @StateObject var viewModel = DetailViewModel()
-    @State var movieID : Int = 693134
-    
-    
-    return DetailView(imageBaseUrl: imageBaseUrl, viewModel: viewModel, movieID: movieID)
-}

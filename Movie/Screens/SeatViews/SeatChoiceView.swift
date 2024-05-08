@@ -3,13 +3,15 @@ import SwiftUI
 
 struct SeatChoiceView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
-    
+    @EnvironmentObject var router: Router
+
     @State private var selectedSeats: [Seat] = []
     @State private var showBasket: Bool = false
     @State private var date: TicketDate = TicketDate.default
     @State private var hour: String = ""
     @State private var navigateToOrderSummary = false
     @StateObject var viewModel = SeatViewModel()
+    
     var movieDetail: MovieDetail?
     var cinema:String = ""
     
@@ -44,19 +46,16 @@ struct SeatChoiceView: View {
                                          selectedSeats: selectedSeats,
                                          cinema: cinema)
                         .environmentObject(fireDBHelper)
+                        .environmentObject(router)
 
+                        
+                        
                     } label: {
                         Button{
                             viewModel.generateRandomNumber()
                             navigateToOrderSummary = true
                         }label: {
-                            Text("Buy Ticket")
-                                .frame(width: 200, height: 60)
-                                .font(.title3.bold())
-                                .foregroundStyle(.white)
-                                .background(.orange)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .padding()
+                            ConfirmBtn(text: "Buy Ticket", width: 200, height: 60, top: 10, leading: 10, bottom: 10, trailing: 10)
                         }
                     }
                 }
@@ -64,7 +63,7 @@ struct SeatChoiceView: View {
             }
             .background(.black)
             .navigationBarBackButtonHidden(true)
-
+            
         }
     }
 }
