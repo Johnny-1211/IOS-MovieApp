@@ -3,12 +3,11 @@ import UIKit
 
 struct OrderSummaryView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
-    
     @State private var showingAlert = false
     @State private var generateTicket = false
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
-    @Binding var rootScreen : RootView
-
+    @Binding var dismissSheet : Bool
+    
     @State var movieOrder : MovieOrder?
     var ticketPrice: Int = 0
     var orderNum : String = ""
@@ -50,13 +49,7 @@ struct OrderSummaryView: View {
                 .background(Color("SectionColor"))
                 
                 VStack(alignment:.leading, spacing: 20){
-                    HStack{
-                        Text("ORDER NUMBER : ")
-                            .foregroundStyle(.white)
-                        Text(orderNum)
-                            .font(.body.bold())
-                            .foregroundStyle(.gray)
-                    }
+                    OrderInfoCell(infoTitle: "ORDER NUMBER : ", infoDetail: orderNum)
                     
                     HStack{
                         Text("\(selectedSeats.count) Ticket")
@@ -73,30 +66,17 @@ struct OrderSummaryView: View {
                     Divider()
                         .background(.white)
                     
-                    HStack{
-                        Text("Number of Seat")
-                            .font(.body.bold())
-                        Spacer()
-                        Text("$\(ticketPrice) ")
-                        Text("x \(selectedSeats.count)")
-                    }
-                    .foregroundStyle(.white)
+                    OrderInfoCell(infoTitle: "Number of Seat:", infoDetail: "$\(ticketPrice) x \(selectedSeats.count)")
                     
                     Divider()
                         .background(.white)
                     
-                    HStack{
-                        Text("Service Fee")
-                            .font(.body.bold())
-                            .foregroundStyle(.white)
-                        Spacer()
-                        Text("$1.3")
-                            .foregroundStyle(.white)
-                    }
+                    OrderInfoCell(infoTitle: "Service Fee:", infoDetail: "$1.3")
                     
                     Text("Payment Method")
                         .font(.title3.bold())
                         .foregroundStyle(.white)
+                    
                     HStack{
                         Image(systemName: "creditcard.fill")
                             .font(.system(size: 40))
@@ -118,21 +98,11 @@ struct OrderSummaryView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color("SectionColor"))
                     .cornerRadius(12)
-                    NavigationLink(
-                        destination:
-                            TicketView(movieOrder: movieOrder),
-                        isActive: $generateTicket
-                    ){
+                    
+                    NavigationLink(isActive: $generateTicket){
+                        TicketView(dismissSheet: $dismissSheet, movieOrder: movieOrder)
+                    }label: {
                         Button{
-//                            let date = "\(date!.day)-\(date!.month)-\(date!.year)"
-//                            let newMovieOrder = MovieOrder(title: movieDetail?.title ?? "",
-//                                                           orderNum: orderNum,
-//                                                           date: date,
-//                                                           hour: hour,
-//                                                           selectedSeats: selectedSeats,
-//                                                           cinema: cinema,
-//                                                           ticketPrice: ticketPrice,
-//                                                           image:  movieDetail?.poster_path ?? "")
                             fireDBHelper.insertMovie(newMovie: movieOrder!)
                             showingAlert = true
                         }label: {

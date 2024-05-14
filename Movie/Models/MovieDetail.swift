@@ -1,6 +1,6 @@
 import Foundation
 
-struct MovieDetail : Codable{
+struct MovieDetail : Codable, Hashable{
     var id : Int
     var backdrop_path : String
     var homepage: String

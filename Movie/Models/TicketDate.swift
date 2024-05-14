@@ -1,6 +1,6 @@
 import Foundation
 
-struct TicketDate : Codable,Equatable {
+struct TicketDate : Codable,Equatable, Hashable {
     var day: String
     var month: String
     var year: String

@@ -5,27 +5,22 @@ struct NavigationView: View {
     var fireAuthHelper = FireAuthHelper()
     
     @State private var root : RootView = .Login
-    
+
     var body: some View {
-        NavigationStack {
+        NavigationStack{
             switch(root) {
             case .Login:
-                LoginView(rootScreen: self.$root)
-                    .environmentObject(self.fireDBHelper)
-                    .environmentObject(fireAuthHelper)
+                LoginView(rootScreen: $root)
             case .SignUp:
-                SignUpView(rootScreen: self.$root)
-                    .environmentObject(self.fireDBHelper)
-                    .environmentObject(fireAuthHelper)
+                SignUpView(rootScreen: $root)
+                
             case .Home:
-                MoviesTabView(rootScreen: self.$root)
-                    .environmentObject(self.fireDBHelper)
-                    .environmentObject(self.fireAuthHelper)
+                MoviesTabView(rootScreen: $root)
             }
         }
+        .environmentObject(self.fireDBHelper)
+        .environmentObject(self.fireAuthHelper)
     }
 }
 
-#Preview {
-    NavigationView()
-}
+

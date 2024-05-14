@@ -3,18 +3,16 @@ import SwiftUI
 
 struct SeatChoiceView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
-    @EnvironmentObject var router: Router
-
+    @Binding var dismissSheet : Bool
+    
     @State private var selectedSeats: [Seat] = []
     @State private var showBasket: Bool = false
     @State private var date: TicketDate = TicketDate.default
     @State private var hour: String = ""
     @State private var navigateToOrderSummary = false
     @StateObject var viewModel = SeatViewModel()
-    
     var movieDetail: MovieDetail?
     var cinema:String = ""
-    
     var body: some View {
         NavigationStack{
             VStack(spacing: 0.0){
@@ -44,12 +42,9 @@ struct SeatChoiceView: View {
                                          date: date,
                                          hour: hour,
                                          selectedSeats: selectedSeats,
-                                         cinema: cinema)
+                                         cinema: cinema,
+                                         dismissSheet: $dismissSheet)
                         .environmentObject(fireDBHelper)
-                        .environmentObject(router)
-
-                        
-                        
                     } label: {
                         Button{
                             viewModel.generateRandomNumber()

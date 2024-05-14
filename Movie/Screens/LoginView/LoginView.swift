@@ -42,7 +42,7 @@ struct LoginView: View {
                             if (!self.email.isEmpty && !self.password.isEmpty){
                                 self.fireAuthHelper.signIn(email: self.email, password: self.password, rootScreen: $rootScreen)
                                 self.fireDBHelper.getAllMovies()
-
+                                
                             }else{
                                 self.showAlert = true
                                 alertCategory = "invaildLogin"
@@ -89,10 +89,10 @@ struct LoginView: View {
             .navigationTitle("Login")
             .navigationBarTitleDisplayMode(.inline)
             
-            //            .onAppear{
-            //                self.email = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
-            //                self.password = UserDefaults.standard.string(forKey: "KEY_PASSWORD") ?? ""
-            //            }
+            .onAppear{
+                self.email = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
+                self.password = UserDefaults.standard.string(forKey: "KEY_PASSWORD") ?? ""
+            }
             
         } // zstack
     }

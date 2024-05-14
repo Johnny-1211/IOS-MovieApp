@@ -3,15 +3,16 @@ import FirebaseAuth
 
 struct HomeView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
-
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = HomeViewModel()
+    @EnvironmentObject var router: Router
+    @State private var isShowingDetail = false
     
-    var body: some View {
+    var body: some View {    
         NavigationStack{
             ZStack{
                 Color("background").ignoresSafeArea()
-                NavigationStack{
+                VStack{
                     HStack{
                         VStack(alignment: .leading){
                             Text("Welcome \(Auth.auth().currentUser?.displayName ?? "Guest")👋")
@@ -32,42 +33,21 @@ struct HomeView: View {
                             Text("Now Playing")
                                 .font(.title2.bold())
                                 .foregroundStyle(.white)
-                            
                             Spacer()
-                            
-                            Button(action: {}, label: {
-                                Text("See All")
-                                    .foregroundStyle(.yellow)
-                            })
                         }
                         .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 20){
                                 ForEach(viewModel.nowplayingMovie, id: \.self){ movie in
-                                    NavigationLink {
-                                        DetailView(movieID: movie.id)
+                                    Button{
+                                        isShowingDetail = true
+                                    } label:{
+                                        NowPlayingMovieCell(imageBaseUrl: imageBaseUrl, movie: movie)
+                                    }
+                                    .fullScreenCover(isPresented: $isShowingDetail) {
+                                        DetailView(dismissSheet: $isShowingDetail, movieID: movie.id)
                                             .environmentObject(fireDBHelper)
-
-                                    } label: {
-                                        VStack{
-                                            AsyncImage(url: URL(string: imageBaseUrl + movie.poster_path)) { image in
-                                                image
-                                                    .image?.resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: 180)
-                                                    .cornerRadius(12)
-                                                    .scrollTransition(.animated){ content, phase in
-                                                        content
-                                                            .scaleEffect(phase != .identity ? 0.8 : 1)
-                                                            .opacity(phase != .identity ? 0.3 : 1)
-                                                    }
-                                            }
-                                            
-                                            Text(movie.title)
-                                                .font(.body.bold())
-                                                .foregroundStyle(.white)
-                                        }
                                     }
                                 }
                             }
@@ -75,17 +55,12 @@ struct HomeView: View {
                         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                         .scrollClipDisabled(true)
                         
+                        
                         HStack{
                             Text("Coming soon")
                                 .font(.title2.bold())
                                 .foregroundStyle(.white)
-                            
                             Spacer()
-                            
-                            Button(action: {}, label: {
-                                Text("See All")
-                                    .foregroundStyle(.yellow)
-                            })
                         }
                         .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
                         
@@ -93,28 +68,7 @@ struct HomeView: View {
                             VStack{
                                 ForEach(viewModel.upcomingMovie, id: \.self){ movie in
                                     Section {
-                                        HStack{
-                                            AsyncImage(url: URL(string: imageBaseUrl + movie.poster_path)){ image in
-                                                image
-                                                    .image?.resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: 120)
-                                                    .cornerRadius(12)
-                                                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
-                                            }
-                                            
-                                            VStack(alignment: .leading,spacing: 10){
-                                                Text(movie.title)
-                                                    .font(.title3.bold())
-                                                    .foregroundStyle(.white)
-                                                
-                                                Text("Rating: \(String(format: "%.2f", movie.vote_average))")
-                                                    .font(.system(size: 15))
-                                                    .foregroundStyle(.gray)
-                                            }
-                                            Spacer()
-                                        }
-                                        .padding()
+                                        UpcomingMovieCell(imageBaseUrl: imageBaseUrl, movie: movie)
                                     }
                                     .background(Color("SectionColor"))
                                     .cornerRadius(12)
@@ -132,7 +86,4 @@ struct HomeView: View {
             viewModel.getNowPlayingMovie()
         }
     }
-}
-#Preview {
-    HomeView()
 }

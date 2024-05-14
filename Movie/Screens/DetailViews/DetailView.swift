@@ -3,7 +3,7 @@ import SwiftUI
 
 struct DetailView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
-    @EnvironmentObject var router: Router
+    @Environment(\.presentationMode) var presentationMode
 
     @State private var cinema = ["Cineplex Cinemas Yorkdale",
                                  "The Royal","Cineplex Entertainment"]
@@ -16,6 +16,10 @@ struct DetailView: View {
     
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = DetailViewModel()
+    
+    @Binding var dismissSheet : Bool
+    
+
     var movieID : Int = 0
         
     var body: some View {
@@ -36,7 +40,18 @@ struct DetailView: View {
                     
                     VStack(spacing:0.0){
                         HStack{
-                            BackBtn()
+                            Circle()
+                                .fill(.gray)
+                                .frame(width: 45)
+                                .foregroundStyle(.white)
+                                .overlay{
+                                    Button{
+                                        presentationMode.wrappedValue.dismiss()
+                                    } label: {
+                                        Image(systemName: "multiply")
+                                            .foregroundStyle(.white)
+                                    }
+                                }
                             Spacer()
                         }
                         .padding(EdgeInsets(top: 46, leading: 20, bottom: 0, trailing: 20))
@@ -177,16 +192,12 @@ struct DetailView: View {
                             }
                         }
                         
-                        NavigationLink {
-                            SeatChoiceView(movieDetail: movie, cinema: selectedCinema)
-                                .environmentObject(fireDBHelper)
-                                .environmentObject(router)
-
-
+                        NavigationLink{
+                            SeatChoiceView(movieDetail: movie, cinema: selectedCinema, dismissSheet: $dismissSheet)
                         } label: {
                             ConfirmBtn(text: "Book Now", width: 250, height: 50, top: 10, leading: 0, bottom: 20, trailing: 0)
-
                         }
+                        .environmentObject(fireDBHelper)
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                 }else{
@@ -199,7 +210,10 @@ struct DetailView: View {
             .background(.black)
             .ignoresSafeArea()
             .navigationBarBackButtonHidden(true)
+
         }
     }
 }
+
+
 
