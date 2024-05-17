@@ -29,60 +29,115 @@ struct HomeView: View {
                     
                     ScrollView(.vertical, showsIndicators: false){
                         LazyVStack{
-                            HStack{
-                                Text("Now Playing")
-                                    .font(.title2.bold())
-                                    .foregroundStyle(.white)
-                                Spacer()
-                            }
-                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 20){
-                                    ForEach(viewModel.nowplayingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self) { movie in
-                                        
-                                        NowPlayingMovieCell(imageBaseUrl: imageBaseUrl, movie: movie)
+                            switch activeTab {
+                            case .all:
+                                HStack{
+                                    Text("Now Playing")
+                                        .font(.title2.bold())
+                                        .foregroundStyle(.white)
+                                    Spacer()
+                                }
+                                .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 20){
+                                        ForEach(viewModel.nowplayingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self) { nowplayingMovie in
+                                            
+                                            HorizontalMovieCell(imageBaseUrl: imageBaseUrl, movie: nowplayingMovie)
+                                                .onTapGesture {
+                                                    isShowingDetail = true
+                                                }
+                                                .fullScreenCover(isPresented: $isShowingDetail) {
+                                                    DetailView(dismissSheet: $isShowingDetail, movieID: nowplayingMovie.id)
+                                                        .environmentObject(fireDBHelper)
+                                                }
+                                        }
+                                    }
+                                }
+                                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                                .scrollClipDisabled(true)
+                                
+                                HStack{
+                                    Text("Coming soon")
+                                        .font(.title2.bold())
+                                        .foregroundStyle(.white)
+                                    Spacer()
+                                }
+                                .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+                                
+                                ScrollView{
+                                    VStack{
+                                        ForEach(viewModel.upcomingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self){ movie in
+                                            Section {
+                                                VerticalMovieCell(imageBaseUrl: imageBaseUrl, movie: movie)
+                                            }
+                                            .background(Color("SectionColor"))
+                                            .cornerRadius(12)
+                                        }
+                                    }
+                                    Spacer()
+                                }
+                                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                            case .nowPlaying:
+                                HStack{
+                                    Text("Now Playing")
+                                        .font(.title2.bold())
+                                        .foregroundStyle(.white)
+                                    Spacer()
+                                }
+                                .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+                                
+                                ScrollView{
+                                    VStack{
+                                        ForEach(viewModel.nowplayingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self){ nowplayingMovie in
+                                            Section {
+                                                VerticalMovieCell(imageBaseUrl: imageBaseUrl, movie: nowplayingMovie)
+                                            }
+                                            .background(Color("SectionColor"))
+                                            .cornerRadius(12)
                                             .onTapGesture {
                                                 isShowingDetail = true
                                             }
                                             .fullScreenCover(isPresented: $isShowingDetail) {
-                                                DetailView(dismissSheet: $isShowingDetail, movieID: movie.id)
+                                                DetailView(dismissSheet: $isShowingDetail, movieID: nowplayingMovie.id)
                                                     .environmentObject(fireDBHelper)
                                             }
-                                    }
-                                }
-                            }
-                            .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-                            .scrollClipDisabled(true)
-                            
-                            HStack{
-                                Text("Coming soon")
-                                    .font(.title2.bold())
-                                    .foregroundStyle(.white)
-                                Spacer()
-                            }
-                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
-                            
-                            ScrollView{
-                                VStack{
-                                    ForEach(viewModel.upcomingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self){ movie in
-                                        Section {
-                                            UpcomingMovieCell(imageBaseUrl: imageBaseUrl, movie: movie)
                                         }
-                                        .background(Color("SectionColor"))
-                                        .cornerRadius(12)
                                     }
+                                    Spacer()
                                 }
-                                Spacer()
+                                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                                
+                            case .upcoming:
+                                HStack{
+                                    Text("Coming soon")
+                                        .font(.title2.bold())
+                                        .foregroundStyle(.white)
+                                    Spacer()
+                                }
+                                .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+                                
+                                ScrollView{
+                                    VStack{
+                                        ForEach(viewModel.upcomingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self){ movie in
+                                            Section {
+                                                VerticalMovieCell(imageBaseUrl: imageBaseUrl, movie: movie)
+                                            }
+                                            .background(Color("SectionColor"))
+                                            .cornerRadius(12)
+                                        }
+                                    }
+                                    Spacer()
+                                }
+                                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                             }
-                            .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                         }
                         .safeAreaInset(edge: .top, spacing: 0) {
                             ExpandableNavigationBar(searchText: $searchText, activeTab: $activeTab, title: "Movies")
                         }
                     }
                     .scrollTargetBehavior(CustomScrollTargetBehaviour())
-
+                    
                 }
             }
             
