@@ -36,13 +36,9 @@ class FireAuthHelper : ObservableObject {
             case .some(_):
                 print(#function, "Successfully created user account")
                 self.user = authResult?.user
-                
-                guard let uid = authResult?.user.uid else {return}
-                let data: [String: Any] = [
-                    "uid": uid,
-                    "email": email,
-                    "username": userName]
-                
+                let changeRequest = user?.createProfileChangeRequest()
+                changeRequest?.displayName = userName
+               
 //                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
 //                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
             }
@@ -87,7 +83,49 @@ class FireAuthHelper : ObservableObject {
         }
     }
     
-    func updateProfile(newName: String) {
+    func updateProfile(newName: String, newEmail: String, currentPassword: String, newPassword: String) {
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+        if !newName.isEmpty {
+            let changeRequest = user.createProfileChangeRequest()
+            changeRequest.displayName = newName
+            changeRequest.commitChanges { error in
+                if let error = error {
+                    print("Failed to update display name: \(error.localizedDescription)")
+                } else {
+                    print("User info updated successfully.")
+                }
+            }
+        }
+        
+        if !newEmail.isEmpty {
+            user.updateEmail(to: newEmail) { error in
+                if let error = error {
+                    print("Failed to update password: \(error.localizedDescription)")
+                    return
+                }
+            }
+        }
+        
+        let credential = EmailAuthProvider.credential(withEmail: user.email ?? "", password: currentPassword)
+                user.reauthenticate(with: credential) { result, error in
+                    if let error = error {
+                        print("Re-authentication failed: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    // Update Password
+                    if !newPassword.isEmpty {
+                        user.updatePassword(to: newPassword) { error in
+                            if let error = error {
+                                print("Failed to update password: \(error.localizedDescription)")
+                                return
+                            }
+                        }
+                    }
+                }
+        
         
     }
 }
