@@ -2,7 +2,6 @@ import SwiftUI
 
 struct OrderListView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
-    @EnvironmentObject var router: Router
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @State var orderList : [MovieOrder] = []
     @State var isActive : Bool = false
@@ -10,7 +9,7 @@ struct OrderListView: View {
 
     
     var body: some View {
-        NavigationStack(path: $router.navPath){
+        NavigationStack{
             ScrollView{
                 VStack{
                     ForEach(self.orderList) { currentOrder in
@@ -27,11 +26,14 @@ struct OrderListView: View {
             }
             
             if fireDBHelper.movieOrder.isEmpty {
-                EmptyState(imageName: "movieOrder",
+                EmptyState(imageName: "list.clipboard",
                            message: "You have no items in your order.\nPlease purchase an ticket!")
             }
         }
         .onAppear{
+            orderList = fireDBHelper.movieOrder
+        }
+        .refreshable {
             orderList = fireDBHelper.movieOrder
         }
     }

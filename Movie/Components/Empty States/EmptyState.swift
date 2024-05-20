@@ -11,17 +11,18 @@ struct EmptyState: View {
                 .ignoresSafeArea()
             
             VStack {
+                Spacer()
                 Image(systemName: imageName)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 150)
-                
                 Text(message)
                     .font(.title3)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
                     .padding()
+                Spacer()
             }
             .offset(y: -50)
         }
