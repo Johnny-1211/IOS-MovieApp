@@ -39,7 +39,7 @@ struct NameUpdateView: View {
                     if let nameError = viewModel.nameError{
                         self.viewModel.nameError = "User Name is required!"
                     }else{
-                        fireDBHelper.updateUserName(name: viewModel.userName, uid: fireAuthHelper.user!.uid)
+                        fireDBHelper.updateUserName(name: viewModel.userName)
                         let changeRequest = fireAuthHelper.user?.createProfileChangeRequest()
                         changeRequest?.displayName = viewModel.userName
                         changeRequest?.commitChanges()

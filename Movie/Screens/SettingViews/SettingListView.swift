@@ -44,10 +44,3 @@ struct SettingListView: View {
 }
 
 
-#Preview {
-    var fireDBHelper = FireDBHelper.getInstance()
-    var fireAuthHelper = FireAuthHelper()
-    return SettingListView()
-        .environmentObject(fireDBHelper)
-        .environmentObject(fireAuthHelper)
-}

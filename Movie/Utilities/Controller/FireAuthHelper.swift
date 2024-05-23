@@ -3,6 +3,8 @@ import SwiftUI
 import FirebaseAuth
 
 class FireAuthHelper : ObservableObject {
+    private let fireDBHelper = FireDBHelper.getInstance()
+    
     @Published var user : User?{
         didSet{
             objectWillChange.send()
@@ -19,7 +21,7 @@ class FireAuthHelper : ObservableObject {
         }
     }
     
-    func signUp(userName : String, email : String, password : String){
+    func signUp(userName : String, email : String, password : String, showAlert: Binding<Bool>, rootScreen: Binding<RootView>, alertCategory:Binding<String>){
         
         Auth.auth().createUser(withEmail: email, password: password){ [self] authResult, error in
             
@@ -36,11 +38,13 @@ class FireAuthHelper : ObservableObject {
             case .some(_):
                 print(#function, "Successfully created user account")
                 self.user = authResult?.user
-                let changeRequest = user?.createProfileChangeRequest()
-                changeRequest?.displayName = userName
-               
-//                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
-//                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
+                fireDBHelper.createUser(userID: user!.uid, name: userName, email: email)
+                alertCategory.wrappedValue = "registrateSuccess"
+                showAlert.wrappedValue = true
+                rootScreen.wrappedValue = .Home
+                
+                UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
+                UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
             }
             
         }
@@ -64,8 +68,6 @@ class FireAuthHelper : ObservableObject {
                 print(#function, "Login Successful")
                 self.user = authResult?.user
                 
-                print(#function, "Logged in user : \(self.user?.displayName ?? "NA" )")
-                
                 UserDefaults.standard.set(self.user?.email, forKey: "KEY_EMAIL")
                 UserDefaults.standard.set(password, forKey: "KEY_PASSWORD")
                 rootScreen.wrappedValue = .Home
@@ -83,49 +85,75 @@ class FireAuthHelper : ObservableObject {
         }
     }
     
-    func updateProfile(newName: String, newEmail: String, currentPassword: String, newPassword: String) {
-        guard let user = Auth.auth().currentUser else {
+    func updatePassword(password:String, showingAlert: Binding<Bool> ,alertMessage: Binding<String>){
+        guard let currentUser = Auth.auth().currentUser else {
+            print(#function, "No user is currently signed in")
             return
         }
-        if !newName.isEmpty {
-            let changeRequest = user.createProfileChangeRequest()
-            changeRequest.displayName = newName
-            changeRequest.commitChanges { error in
-                if let error = error {
-                    print("Failed to update display name: \(error.localizedDescription)")
-                } else {
-                    print("User info updated successfully.")
-                }
-            }
+        do{
+            currentUser.updatePassword(to: password)
+            showingAlert.wrappedValue = true
+            alertMessage.wrappedValue = "Update successfully"
+        }catch let err as NSError{
+            showingAlert.wrappedValue = true
+            alertMessage.wrappedValue = "Update password failure"
+            print(#function, "Update password failure: \(err)")
         }
         
-        if !newEmail.isEmpty {
-            user.updateEmail(to: newEmail) { error in
-                if let error = error {
-                    print("Failed to update password: \(error.localizedDescription)")
-                    return
-                }
-            }
+    }
+    
+    func reAuthenticateUserAndUpdate(updateType: String, updateData: String, showingAlert: Binding<Bool> ,alertMessage: Binding<String>) {
+        guard let currentUser = Auth.auth().currentUser else {
+            print(#function, "No user is currently signed in")
+            return
         }
         
-        let credential = EmailAuthProvider.credential(withEmail: user.email ?? "", password: currentPassword)
-                user.reauthenticate(with: credential) { result, error in
-                    if let error = error {
-                        print("Re-authentication failed: \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    // Update Password
-                    if !newPassword.isEmpty {
-                        user.updatePassword(to: newPassword) { error in
+        let currentEmail = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
+        let currentPassword = UserDefaults.standard.string(forKey: "KEY_PASSWORD") ?? ""
+        let credential = EmailAuthProvider.credential(withEmail: currentEmail, password: currentPassword)
+        
+        currentUser.reauthenticate(with: credential) { result, error in
+            if let error = error {
+                showingAlert.wrappedValue = true
+                alertMessage.wrappedValue = "Error reauthenticating"
+                print("Error reauthenticating: \(error.localizedDescription)")
+            }else{
+                print("Successfully authenicate the user")
+                switch updateType{
+                case "email":
+                    do{
+                        currentUser.sendEmailVerification(beforeUpdatingEmail: updateData) { error in
                             if let error = error {
-                                print("Failed to update password: \(error.localizedDescription)")
-                                return
+                                showingAlert.wrappedValue = true
+                                alertMessage.wrappedValue = "Unable to send email verification"
+                                print(#function, "Unable to send email verification: \(error.localizedDescription)")
+                            }else{
+                                self.fireDBHelper.updateEmail(email: updateData)
+                                showingAlert.wrappedValue = true
+                                alertMessage.wrappedValue = "verification link of email update sent!"
+                                print(#function, "Update successfully")
                             }
                         }
+                        
+                    }catch let err as NSError{
+                        showingAlert.wrappedValue = true
+                        alertMessage.wrappedValue = "Update email failure"
+                        print(#function, "Update email failure: \(err)")
                     }
+                case "password":
+                    do{
+                        currentUser.updatePassword(to: updateData)
+                        showingAlert.wrappedValue = true
+                        alertMessage.wrappedValue = "Update successfully"
+                    }catch let err as NSError{
+                        showingAlert.wrappedValue = true
+                        alertMessage.wrappedValue = "Update password failure"
+                        print(#function, "Update password failure: \(err)")
+                    }
+                default:
+                    print(#function, "No updateType")
                 }
-        
-        
+            }
+        }
     }
 }

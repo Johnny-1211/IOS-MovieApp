@@ -1,14 +1,14 @@
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 class FireDBHelper : ObservableObject {
-    @Published var movieOrder = [MovieOrder]()
-    var fireAuthHelper = FireAuthHelper()
-    
+    @Published var movieOrder : [MovieOrder] = []
     private let db : Firestore
     private static var shared : FireDBHelper?
     private let COLLECTION_USER    : String = "User"
     private let COLLECTION_MOVIES  : String = "Movies"
+    
     
     init(db : Firestore){
         self.db = db
@@ -22,6 +22,52 @@ class FireDBHelper : ObservableObject {
         return shared!
     }
     
+    func createUser(userID userID: String, name name:String, email email:String){
+        let userProfile = Users(name: name , email: email)
+        do{
+            try self.db
+                .collection(COLLECTION_USER)
+                .document(userID)
+                .setData(from: userProfile)
+        } catch let err as NSError{
+            print(#function, "unable to create user into database")
+        }
+    }
+    
+    func getUser() async -> Users?{
+        do {
+            return try await self.db
+                .collection(COLLECTION_USER)
+                .document(Auth.auth().currentUser?.uid ?? "")
+                .getDocument(as: Users.self)
+        }catch let err as NSError{
+            print(#function, "unable to get the user profile: \(err)")
+        }
+        return nil
+    }
+    
+    func updateUserName(name userName: String){
+        do{
+            try self.db
+                .collection(COLLECTION_USER)
+                .document(Auth.auth().currentUser?.uid ?? "")
+                .updateData(["name": userName])
+        }catch let err as NSError {
+            print(#function, "unable to update user name: \(err)")
+        }
+    }
+    
+    func updateEmail(email userEmail: String){
+        do{
+            try self.db
+                .collection(COLLECTION_USER)
+                .document(Auth.auth().currentUser?.uid ?? "")
+                .updateData(["email": userEmail])
+        }catch let err as NSError {
+            print(#function, "unable to update user email: \(err)")
+        }
+    }
+    
     func insertMovie(newMovie : MovieOrder){
         let loggedInUserEmail = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
         
@@ -32,7 +78,7 @@ class FireDBHelper : ObservableObject {
             do{
                 try self.db
                     .collection(COLLECTION_USER)
-                    .document(loggedInUserEmail)
+                    .document(Auth.auth().currentUser?.uid ?? "")
                     .collection(COLLECTION_MOVIES)
                     .addDocument(from: newMovie)
             }catch let err as NSError{
@@ -42,14 +88,9 @@ class FireDBHelper : ObservableObject {
     }
     
     func getAllMovies(){
-        let loggedInUserEmail = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
-        
-        if (loggedInUserEmail.isEmpty){
-            print(#function, "Logged in user information not available. Can't add the book")
-        }else{
-            
+
             self.db.collection(COLLECTION_USER)
-                .document(loggedInUserEmail)
+                .document(Auth.auth().currentUser?.uid ?? "")
                 .collection(COLLECTION_MOVIES)
                 .addSnapshotListener({ (querySnapshot, error) in
                     
@@ -72,13 +113,11 @@ class FireDBHelper : ObservableObject {
                                 print(#function, "Document added : \(docChange.document.documentID)")
                                 self.movieOrder.append(movie)
                             case .modified:
-                                //replace existing object with updated one
                                 print(#function, "Document updated : \(docChange.document.documentID)")
                                 if (matchedIndex != nil){
                                     self.movieOrder[matchedIndex!] = movie
                                 }
                             case .removed:
-                                //remove object from index in movieOrder
                                 print(#function, "Document removed : \(docChange.document.documentID)")
                                 if (matchedIndex != nil){
                                     self.movieOrder.remove(at: matchedIndex!)
@@ -88,52 +127,9 @@ class FireDBHelper : ObservableObject {
                         }catch let err as NSError{
                             print(#function, "Unable to convert document into Swift object : \(err)")
                         }
-                        
-                    }//forEach
-                })//addSnapshotListener
-        }
-    }//getAllBooks
-    
-//    func deleteBook(MovieToDelete : MovieOrder){
-//        let loggedInUserEmail = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
-//        
-//        if (loggedInUserEmail.isEmpty){
-//            print(#function, "Logged in user information not available. Can't add the book")
-//        }else{
-//            self.db.collection(COLLECTION_USER)
-//                .document(loggedInUserEmail)
-//                .collection(COLLECTION_MOVIES)
-//                .document(bookToDelete.id!)
-//                .delete{error in
-//                    if let err = error{
-//                        print(#function, "Unable to delete document : \(err)")
-//                    }else{
-//                        print(#function, "successfully deleted : \(bookToDelete.title)")
-//                    }
-//                }
+                    } //forEach
+                }) //addSnapshotListener
 //        }
-//    }
-//    
-//    func updateBook(bookToUpdate : MovieOrder){
-//        let loggedInUserEmail = UserDefaults.standard.string(forKey: "KEY_EMAIL") ?? ""
-//        
-//        if (loggedInUserEmail.isEmpty){
-//            print(#function, "Logged in user information not available. Can't add the book")
-//        }else{
-//            self.db.collection(COLLECTION_LIBRARY)
-//                .document(loggedInUserEmail)
-//                .collection(COLLECTION_BOOKS)
-//                .document(bookToUpdate.id!)
-//                .updateData([FIELD_TITLE: bookToUpdate.title,
-//                            FIELD_AUTHOR: bookToUpdate.author,
-//                         FIELD_ISFICTION: bookToUpdate.isFiction]){ error in
-//                    
-//                    if let err = error{
-//                        print(#function, "Unable to update document : \(err)")
-//                    }else{
-//                        print(#function, "successfully updated : \(bookToUpdate.title)")
-//                    }
-//                }
-//        }
-//    }
+    }//getAllMovies
+
 }

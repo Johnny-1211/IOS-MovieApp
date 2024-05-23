@@ -22,7 +22,7 @@ struct EmailUpdateView: View {
                 .padding(.horizontal, 15)
                 .frame(height: 45)
                 .clipShape(.capsule)
-                .keyboardType(.alphabet)
+                .keyboardType(.emailAddress)
                 .background{
                     RoundedRectangle(cornerRadius: 25.0)
                         .fill(Color.white)
@@ -39,16 +39,17 @@ struct EmailUpdateView: View {
                 Button{
                     if let emailError = viewModel.emailError{
                         self.viewModel.emailError = "Email is required!"
-                    }else{
+                        }else{
                         if viewModel.isValidEmail(viewModel.newEmail){
-                            Task{
-                                do {
-//                                    try fireAuthHelper.updateEmail(email: viewModel.newEmail)
-//                                    fireDBHelper.updateEmail(email: viewModel.newEmail, uid: fireAuthHelper.user!.uid)
-                                } catch let err as NSError{
-                                    print(#function, "unable to update email: \(err)")
-                                }
+                            do {
+                                fireAuthHelper.reAuthenticateUserAndUpdate(updateType: "email", updateData: viewModel.newEmail, showingAlert: $viewModel.showingAlert, alertMessage: $viewModel.alertMessage)
+                                //                                    await fireAuthHelper.updateEmail(email: viewModel.newEmail)
+//                                fireDBHelper.updateEmail(email: viewModel.newEmail)
+                            } catch let err as NSError{
+                                print(#function, "unable to update email: \(err)")
                             }
+                        }else{
+                            print("Email is invalid")
                         }
                     }
                 }label: {
@@ -68,8 +69,8 @@ struct EmailUpdateView: View {
             .padding(20)
         }
         .alert(isPresented: $viewModel.showingAlert) {
-            Alert(title: Text("Update success"),
-                  message: Text("Your email update was successful"),
+            Alert(title: Text("Update Infomation"),
+                  message: Text(viewModel.alertMessage),
                   dismissButton: .default(Text("OK")) {})
         }
     }
