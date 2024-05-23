@@ -13,20 +13,6 @@ struct HomeView: View {
             ZStack{
                 Color("background").ignoresSafeArea()
                 VStack{
-                    //                    HStack{
-                    //                        VStack(alignment: .leading){
-                    //                            Text("Welcome \(Auth.auth().currentUser?.displayName ?? "Guest")👋")
-                    //                                .font(.body)
-                    //                                .foregroundStyle(.gray)
-                    //
-                    //                            Text("Let's relax and watch a movie.")
-                    //                                .font(.body.bold())
-                    //                                .foregroundStyle(.white)
-                    //                        }
-                    //                        Spacer()
-                    //                    }
-                    //                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-                    
                     ScrollView(.vertical, showsIndicators: false){
                         LazyVStack{
                             switch activeTab {
@@ -143,6 +129,7 @@ struct HomeView: View {
             
         }
         .task {
+            fireDBHelper.getAllMovies()
             viewModel.getNowPlayingMovie()
         }
     }

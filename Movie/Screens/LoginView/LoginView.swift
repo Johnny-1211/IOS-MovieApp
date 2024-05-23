@@ -41,8 +41,6 @@ struct LoginView: View {
                         Button(action: {
                             if (!self.email.isEmpty && !self.password.isEmpty){
                                 self.fireAuthHelper.signIn(email: self.email, password: self.password, rootScreen: $rootScreen)
-                                self.fireDBHelper.getAllMovies()
-                                
                             }else{
                                 self.showAlert = true
                                 alertCategory = "invaildLogin"
