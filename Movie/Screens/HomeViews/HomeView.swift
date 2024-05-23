@@ -8,6 +8,9 @@ struct HomeView: View {
     @State private var isShowingDetail = false
     @State private var searchText: String = ""
     @State private var activeTab: Tab = .all
+    
+    @Binding var rootScreen : RootView
+    
     var body: some View {
         NavigationStack{
             ZStack{
@@ -129,8 +132,10 @@ struct HomeView: View {
             
         }
         .task {
-            fireDBHelper.getAllMovies()
-            viewModel.getNowPlayingMovie()
+            if rootScreen == .Home{
+                fireDBHelper.getAllMovies()
+                viewModel.getNowPlayingMovie()
+            }
         }
     }
 }
@@ -140,8 +145,9 @@ struct HomeView: View {
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = HomeViewModel()
     @State var isShowingDetail = false
+    @State var rootScreen : RootView = .Home
     
-    return HomeView(imageBaseUrl: imageBaseUrl, viewModel: viewModel).environmentObject(fireDBHelper)
+    return HomeView(imageBaseUrl: imageBaseUrl, viewModel: viewModel, rootScreen: $rootScreen).environmentObject(fireDBHelper)
     
 }
 
