@@ -8,6 +8,7 @@ struct HomeView: View {
     @State private var isShowingDetail = false
     @State private var searchText: String = ""
     @State private var activeTab: Tab = .all
+    @State private var selectedMovieID : IdentifiableInt?
     
     @Binding var rootScreen : RootView
     
@@ -31,15 +32,19 @@ struct HomeView: View {
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 20){
                                         ForEach(viewModel.nowplayingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self) { nowplayingMovie in
-                                            
-                                            HorizontalMovieCell(imageBaseUrl: imageBaseUrl, movie: nowplayingMovie)
-                                                .onTapGesture {
-                                                    isShowingDetail = true
-                                                }
-                                                .fullScreenCover(isPresented: $isShowingDetail) {
-                                                    DetailView(dismissSheet: $isShowingDetail, movieID: nowplayingMovie.id)
-                                                        .environmentObject(fireDBHelper)
-                                                }
+                                            Button{
+                                                selectedMovieID = IdentifiableInt(id: nowplayingMovie.id)
+                                                isShowingDetail = true
+                                            } label: {
+                                                HorizontalMovieCell(imageBaseUrl: imageBaseUrl, movie: nowplayingMovie)
+                                            }
+                                            .fullScreenCover(item: $selectedMovieID, onDismiss: {
+                                                selectedMovieID = nil
+                                                isShowingDetail = false
+                                            }) { identifiableInt in
+                                                DetailView(dismissSheet: $isShowingDetail, movieID: identifiableInt.id)
+                                                    .environmentObject(fireDBHelper)
+                                            }
                                         }
                                     }
                                 }
