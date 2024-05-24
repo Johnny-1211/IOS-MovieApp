@@ -85,17 +85,22 @@ struct HomeView: View {
                                     VStack{
                                         ForEach(viewModel.nowplayingMovie.filter{$0.title.lowercased().hasPrefix(searchText.lowercased()) || searchText == ""}, id: \.self){ nowplayingMovie in
                                             Section {
-                                                VerticalMovieCell(imageBaseUrl: imageBaseUrl, movie: nowplayingMovie)
+                                                Button{
+                                                    selectedMovieID = IdentifiableInt(id: nowplayingMovie.id)
+                                                    isShowingDetail = true
+                                                } label: {
+                                                    VerticalMovieCell(imageBaseUrl: imageBaseUrl, movie: nowplayingMovie)
+                                                }
+                                                .fullScreenCover(item: $selectedMovieID, onDismiss: {
+                                                    selectedMovieID = nil
+                                                    isShowingDetail = false
+                                                }) { identifiableInt in
+                                                    DetailView(dismissSheet: $isShowingDetail, movieID: identifiableInt.id)
+                                                        .environmentObject(fireDBHelper)
+                                                }
                                             }
                                             .background(Color("SectionColor"))
                                             .cornerRadius(12)
-                                            .onTapGesture {
-                                                isShowingDetail = true
-                                            }
-                                            .fullScreenCover(isPresented: $isShowingDetail) {
-                                                DetailView(dismissSheet: $isShowingDetail, movieID: nowplayingMovie.id)
-                                                    .environmentObject(fireDBHelper)
-                                            }
                                         }
                                     }
                                     Spacer()
