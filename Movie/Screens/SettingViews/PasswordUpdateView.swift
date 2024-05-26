@@ -41,12 +41,11 @@ struct PasswordUpdateView: View {
                         self.viewModel.passwordError = "Password is required!"
                     }else{
                         if viewModel.newPassword.count >= 6{
-                            Task{
-                                do {
-//                                    try fireAuthHelper.updatePassword(password: viewModel.newPassword)
-                                } catch let err as NSError{
-                                    print(#function, "unable to update email: \(err)")
-                                }
+                            do {
+//                                fireAuthHelper.reAuthenticateUserAndUpdate(updateType: "password", updateData: viewModel.newPassword, showingAlert: $viewModel.showingAlert,alertMessage: $viewModel.alertMessage)
+                                fireAuthHelper.updatePassword(password: viewModel.newPassword, showingAlert: $viewModel.showingAlert, alertMessage: $viewModel.alertMessage)
+                            } catch let err as NSError{
+                                print(#function, "unable to update email: \(err)")
                             }
                         } else{
                             viewModel.passwordError = "Password must be at least 6 characters long."
@@ -69,8 +68,8 @@ struct PasswordUpdateView: View {
             .padding(20)
         }
         .alert(isPresented: $viewModel.showingAlert) {
-            Alert(title: Text("Update success"),
-                  message: Text("Your password update was successful"),
+            Alert(title: Text("Update Infomation"),
+                  message: Text(viewModel.alertMessage),
                   dismissButton: .default(Text("OK")) {})
         }
     }
