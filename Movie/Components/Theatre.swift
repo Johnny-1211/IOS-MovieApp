@@ -43,8 +43,8 @@ struct Theatre: View {
                         
                         ChairView(width: 30, accentColor: .orange, reservedColor: .purple,seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)"), onSelect: { seat in
                             self.selectedSeats.append(seat)
-                        }, onDeselect: { seat in
-                            self.selectedSeats.removeAll(where: {$0.id == seat.id})
+                        }, onDelete: { seat in
+                            self.selectedSeats.removeAll(where: {$0.seatNum == seat.seatNum})
                         })
                     }
                 }
@@ -65,8 +65,8 @@ struct Theatre: View {
                     ForEach(0..<numbersPerRow, id: \.self){ number in
                         ChairView(width: 30, accentColor: .orange, reservedColor: .purple,seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)") , onSelect: { seat in
                             self.selectedSeats.append(seat)
-                        }, onDeselect: { seat in
-                            self.selectedSeats.removeAll(where: {$0.id == seat.id})
+                        }, onDelete: { seat in
+                            self.selectedSeats.removeAll(where: {$0.seatNum == seat.seatNum})
                         })
                     }
                 }
@@ -76,9 +76,9 @@ struct Theatre: View {
     
     fileprivate func createSeatsLegend() -> some View{
         HStack{
-            ChairLegend(text: "Selected", color: Color.orange)
-            ChairLegend(text: "Reserved", color: Color.purple)
-            ChairLegend(text: "Available", color: Color.gray)
+            ChairLegend(text: "Selected", color: .orange)
+            ChairLegend(text: "Reserved", color: .purple)
+            ChairLegend(text: "Available", color: .gray)
         }.padding(.horizontal, 20).padding(.top)
     }
 }

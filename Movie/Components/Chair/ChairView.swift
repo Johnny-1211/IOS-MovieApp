@@ -12,7 +12,7 @@ struct ChairView: View {
     @State private var notAvailable = false
     @State private var isSelectable = true
     var onSelect: ((Seat)->()) = {_ in }
-    var onDeselect: ((Seat)->()) = {_ in }
+    var onDelete: ((Seat)->()) = {_ in }
     
     var body: some View {
         VStack(spacing: 2) {
@@ -35,7 +35,7 @@ struct ChairView: View {
                 if self.isSelected{
                     self.onSelect(self.seat)
                 } else {
-                    self.onDeselect(self.seat)
+                    self.onDelete(self.seat)
                 }
             }
         }

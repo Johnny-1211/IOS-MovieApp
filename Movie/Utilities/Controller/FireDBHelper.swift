@@ -191,7 +191,6 @@ class FireDBHelper : ObservableObject {
     
     func getUnavailableChair(movieTitle:String, cinema:String, date: String, hour:String) async  {
         do{
-            print(#function, "start fetch unavailable chair data from db")
             let querySnapshot = try await db.collection(COLLECTION_BOOKED_CHAIR)
                 .whereField("title", isEqualTo: movieTitle)
                 .whereField("cinema", isEqualTo: cinema)
@@ -208,7 +207,6 @@ class FireDBHelper : ObservableObject {
                   for document in querySnapshot.documents {
                       if let bookedChair = try? document.data(as: BookedChair.self) {
                           tempBookedChairlist.append(bookedChair)
-//                          self.bookedChair.append(bookedChair)
                       }
                   }
                 self.bookedChair = tempBookedChairlist
