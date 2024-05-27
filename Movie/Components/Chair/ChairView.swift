@@ -1,12 +1,16 @@
 import SwiftUI
 
 struct ChairView: View {
+    @EnvironmentObject var fireDBHelper : FireDBHelper
+    @StateObject var viewModel = SeatViewModel()
     
     var width: CGFloat = 50
-    var accentColor: Color = .orange
+    var accentColor: Color
+    var reservedColor: Color
     var seat = Seat.default
     @State private var isSelected = false
-    var isSelectable = true
+    @State private var notAvailable = false
+    @State private var isSelectable = true
     var onSelect: ((Seat)->()) = {_ in }
     var onDeselect: ((Seat)->()) = {_ in }
     
@@ -14,7 +18,7 @@ struct ChairView: View {
         VStack(spacing: 2) {
             Rectangle()
                 .frame(width: self.width, height: self.width * 2/3)
-                .foregroundColor(isSelectable ? isSelected ? accentColor : Color.gray.opacity(0.5) : accentColor)
+                .foregroundColor(isSelectable ? isSelected ? accentColor : Color.gray.opacity(0.5) : reservedColor)
                 .cornerRadius(width / 5)
                 .overlay{
                     Text("\(seat.seatNum)")
@@ -22,7 +26,7 @@ struct ChairView: View {
             
             Rectangle()
                 .frame(width: width - 10, height: width / 5)
-                .foregroundColor(isSelectable ? isSelected ? accentColor :  Color.gray.opacity(0.5) : accentColor)
+                .foregroundColor(isSelectable ? isSelected ? accentColor :  Color.gray.opacity(0.5) : reservedColor)
                 .cornerRadius(width / 5)
         }
         .onTapGesture {
@@ -35,6 +39,27 @@ struct ChairView: View {
                 }
             }
         }
+        .onAppear{
+            updateSelectableState(with: fireDBHelper.bookedChair)
+        }
+        .onReceive(fireDBHelper.$bookedChair) { bookChairs in
+            updateSelectableState(with: bookChairs)
+        }
+    }
+    
+    private func updateSelectableState(with bookedChairs: [BookedChair]) {
+        if !bookedChairs.isEmpty {
+            for bookedChair in bookedChairs {
+                for selectedSeat in bookedChair.selectedSeats {
+                    if selectedSeat.seatNum == seat.seatNum {
+                        isSelectable = false
+                        return
+                    }
+                }
+            }
+        }
+        isSelectable = true
+        isSelected = false
     }
 }
 

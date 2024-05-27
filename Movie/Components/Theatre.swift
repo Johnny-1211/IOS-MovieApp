@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct Theatre: View {
-    
+    @EnvironmentObject var fireDBHelper : FireDBHelper
     @Binding var selectedSeats:[Seat]
-    
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -38,7 +38,10 @@ struct Theatre: View {
             ForEach(0..<rows, id: \.self) { row in
                 HStack{
                     ForEach(0..<numbersPerRow, id: \.self){ number in
-                        ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)") , onSelect: { seat in
+                        var isSelectable = true
+                        var isSelected = false
+                        
+                        ChairView(width: 30, accentColor: .orange, reservedColor: .purple,seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)"), onSelect: { seat in
                             self.selectedSeats.append(seat)
                         }, onDeselect: { seat in
                             self.selectedSeats.removeAll(where: {$0.id == seat.id})
@@ -60,7 +63,7 @@ struct Theatre: View {
             ForEach(0..<rows, id: \.self) { row in
                 HStack{
                     ForEach(0..<numbersPerRow, id: \.self){ number in
-                        ChairView(width: 30, accentColor: .orange, seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)") , onSelect: { seat in
+                        ChairView(width: 30, accentColor: .orange, reservedColor: .purple,seat: Seat(id: UUID(), seatNum: "\(rowMark[row])\(number + 1)") , onSelect: { seat in
                             self.selectedSeats.append(seat)
                         }, onDeselect: { seat in
                             self.selectedSeats.removeAll(where: {$0.id == seat.id})
@@ -73,15 +76,16 @@ struct Theatre: View {
     
     fileprivate func createSeatsLegend() -> some View{
         HStack{
-            ChairLegend(text: "Selected", color: .orange)
-            ChairLegend(text: "Reserved", color: .purple)
-            ChairLegend(text: "Available", color: .gray)
+            ChairLegend(text: "Selected", color: Color.orange)
+            ChairLegend(text: "Reserved", color: Color.purple)
+            ChairLegend(text: "Available", color: Color.gray)
         }.padding(.horizontal, 20).padding(.top)
     }
 }
 
 #Preview {
     @State var selectedSeats : [Seat] = []
+    @State var cinema = ""
     return Theatre(selectedSeats: $selectedSeats)
 }
 

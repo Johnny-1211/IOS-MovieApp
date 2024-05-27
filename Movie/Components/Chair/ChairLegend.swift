@@ -9,21 +9,16 @@ import SwiftUI
 
 struct ChairLegend: View {
     var text = "Selected"
-    var color: Color = .gray
+    var color: Color
     
     var body: some View {
         HStack{
-             ChairView(width: 20,accentColor: color, isSelectable: false)
+            ChairView(width: 20, accentColor: color, reservedColor: Color.clear)
             Text(text).font(.subheadline).foregroundColor(color)
         }.frame(maxWidth: .infinity)
     }
 }
-struct ChairLegend_Previews: PreviewProvider {
-    static var previews: some View {
-        ChairLegend()
-    }
-}
 
 #Preview {
-    ChairLegend()
+    ChairLegend(color: Color.gray)
 }
