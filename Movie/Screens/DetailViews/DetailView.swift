@@ -58,13 +58,6 @@ struct DetailView: View {
                                             .font(.title3.bold())
                                             .foregroundStyle(.white)
                                         Spacer()
-                                        Button(action: {
-                                            
-                                        }, label: {
-                                            Image(systemName: "bookmark.circle")
-                                                .foregroundStyle(.white)
-                                                .font(.system(size: 30))
-                                        })
                                     }
                                     
                                     Text("Date: \(movie.release_date)")

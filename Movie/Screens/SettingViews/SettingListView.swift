@@ -52,8 +52,8 @@ struct SettingListView: View {
                             Alert(title: Text("Log Out"),
                                   message: Text("Do you want to logout?"),
                                   primaryButton: .default(Text("Log Out")) {
-                                fireAuthHelper.signOut()
                                 rootScreen = .Login
+                                fireAuthHelper.signOut()
                             },
                                   secondaryButton: .cancel()
                             )
