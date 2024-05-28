@@ -164,13 +164,11 @@ class FireDBHelper : ObservableObject {
                                 self.movieOrder.remove(at: matchedIndex!)
                             }
                         }
-                        
                     }catch let err as NSError{
                         print(#function, "Unable to convert document into Swift object : \(err)")
                     }
                 } //forEach
             }) //addSnapshotListener
-        //        }
     }//getAllMovies
     
     func insertBookedChair(bookedChair: BookedChair){

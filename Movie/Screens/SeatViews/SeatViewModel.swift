@@ -12,6 +12,7 @@ class SeatViewModel : ObservableObject {
     @Published var isSelectable: Bool = true
     @Published var dateSelected: Bool = false
     @Published var hourSelected: Bool = false
+    @Published var showingAlert: Bool = false
     
 
     func generateRandomNumber(){

@@ -146,11 +146,15 @@ struct HomeView: View {
             }
             
         }
-        .task {
+        .onAppear {
             if rootScreen == .Home{
                 fireDBHelper.getAllMovies()
                 viewModel.getNowPlayingMovie()
             }
+        }
+        .refreshable {
+            fireDBHelper.getAllMovies()
+            viewModel.getNowPlayingMovie()
         }
     }
 }

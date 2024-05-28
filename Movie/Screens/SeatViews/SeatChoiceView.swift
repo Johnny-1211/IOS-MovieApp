@@ -7,7 +7,11 @@ struct SeatChoiceView: View {
     @Binding var selectedMovieID: IdentifiableInt?
     @StateObject var viewModel = SeatViewModel()
     
-    private var areBothTrue: Bool {
+    private var allSelected: Bool {
+        !viewModel.selectedSeats.isEmpty && viewModel.dateSelected && viewModel.hourSelected
+    }
+    
+    private var dateHourBothTrue: Bool {
         viewModel.dateSelected && viewModel.hourSelected
     }
     var movieDetail: MovieDetail?
@@ -21,7 +25,7 @@ struct SeatChoiceView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
-                if areBothTrue{
+                if dateHourBothTrue{
                     Theatre(selectedSeats: $viewModel.selectedSeats)
                     
                 }else{
@@ -62,20 +66,29 @@ struct SeatChoiceView: View {
                         .environmentObject(fireDBHelper)
                     } label: {
                         Button{
-                            viewModel.generateRandomNumber()
-                            viewModel.navigateToOrderSummary = true
+                            if allSelected{
+                                viewModel.generateRandomNumber()
+                                viewModel.navigateToOrderSummary = true
+                            }else{
+                                viewModel.showingAlert = true
+                            }
                         }label: {
                             ConfirmBtn(text: "Buy Ticket", width: 200, height: 60, top: 10, leading: 10, bottom: 10, trailing: 10)
                         }
                     }
                 }
                 .padding(20)
+                .alert(isPresented: $viewModel.showingAlert) {
+                    Alert(title: Text("Invalid Data") ,
+                          message: Text("Please select all field."),
+                          dismissButton: .destructive(Text("OK")))
+                }
                 
             }
             .background(.black)
             .navigationBarBackButtonHidden(true)
             .onChange(of: viewModel.date, {
-                if areBothTrue{
+                if dateHourBothTrue{
                     Task{
                         let date = "\(viewModel.date.day)-\(viewModel.date.month)-\(viewModel.date.year)"
                         await fireDBHelper.getUnavailableChair(movieTitle: movieDetail!.title, cinema: cinema, date: date, hour: viewModel.hour)
@@ -85,7 +98,7 @@ struct SeatChoiceView: View {
                 }
             })
             .onChange(of: viewModel.hour, {
-                if areBothTrue{
+                if dateHourBothTrue{
                     Task{
                         let date = "\(viewModel.date.day)-\(viewModel.date.month)-\(viewModel.date.year)"
                         await fireDBHelper.getUnavailableChair(movieTitle: movieDetail!.title, cinema: cinema, date: date, hour: viewModel.hour)
