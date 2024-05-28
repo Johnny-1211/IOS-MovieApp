@@ -5,14 +5,11 @@ struct SeatChoiceView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
     @Binding var dismissSheet : Bool
     @Binding var selectedMovieID: IdentifiableInt?
-
-    @State private var selectedSeats: [Seat] = []
+    @StateObject var viewModel = SeatViewModel()
     
     private var areBothTrue: Bool {
         viewModel.dateSelected && viewModel.hourSelected
     }
-    
-    @StateObject var viewModel = SeatViewModel()
     var movieDetail: MovieDetail?
     var cinema:String
     
@@ -25,7 +22,7 @@ struct SeatChoiceView: View {
                 }
                 .padding(.horizontal, 20)
                 if areBothTrue{
-                    Theatre(selectedSeats: $selectedSeats)
+                    Theatre(selectedSeats: $viewModel.selectedSeats)
                     
                 }else{
                     VStack{
@@ -44,7 +41,7 @@ struct SeatChoiceView: View {
                     VStack(alignment:.leading){
                         Text("Price")
                             .foregroundStyle(.gray)
-                        Text("$\(selectedSeats.count * viewModel.price)")
+                        Text("$\(viewModel.selectedSeats.count * viewModel.price)")
                             .font(.title3.bold())
                             .foregroundStyle(.white)
                     }
@@ -60,7 +57,7 @@ struct SeatChoiceView: View {
                                          movieDetail: movieDetail,
                                          date: viewModel.date,
                                          hour: viewModel.hour,
-                                         selectedSeats: selectedSeats,
+                                         selectedSeats: viewModel.selectedSeats,
                                          cinema: cinema)
                         .environmentObject(fireDBHelper)
                     } label: {

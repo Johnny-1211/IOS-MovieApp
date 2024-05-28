@@ -2,10 +2,10 @@ import Foundation
 import SwiftUI
 
 class SeatViewModel : ObservableObject {
+    @Published var selectedSeats: [Seat] = []
     @Published var randomNum:String = ""
     @Published var showPopup = false
     @Published var price = 10
-    
     @Published var date: TicketDate = TicketDate.default
     @Published var hour: String = ""
     @Published var navigateToOrderSummary = false
