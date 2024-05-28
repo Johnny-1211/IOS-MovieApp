@@ -7,7 +7,8 @@ struct OrderSummaryView: View {
     @State private var generateTicket = false
     @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @Binding var dismissSheet : Bool
-    
+    @Binding var selectedMovieID: IdentifiableInt?
+
     @State var movieOrder : MovieOrder?
     var ticketPrice: Int = 0
     var orderNum : String = ""
@@ -100,11 +101,13 @@ struct OrderSummaryView: View {
                     .cornerRadius(12)
                     
                     NavigationLink(isActive: $generateTicket){
-                        TicketView(dismissSheet: $dismissSheet, movieOrder: movieOrder)
+                        TicketView(dismissSheet: $dismissSheet, selectedMovieID: $selectedMovieID,movieOrder: movieOrder)
                     }label: {
                         Button{
-                            fireDBHelper.insertMovie(newMovie: movieOrder!)
-                            showingAlert = true
+                            Task{
+                                await fireDBHelper.insertMovie(newMovie: movieOrder!, updateSelectedSeat: selectedSeats)
+                                showingAlert = true
+                            }
                         }label: {
                             Text("Purchase | $\(ticketPrice * selectedSeats.count)")
                                 .frame(maxWidth: .infinity)
