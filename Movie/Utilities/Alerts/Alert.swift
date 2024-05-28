@@ -41,5 +41,8 @@ struct AlertContext {
     static let registrateSuccess = AlertItem(title: Text("Success"),
                                                message: Text("Your account has been created successfully."),
                                                dismissButton: .default(Text("OK")))
+    static let loginSuccess = AlertItem(title: Text("Success"),
+                                               message: Text("Your account has been login successfully."),
+                                               dismissButton: .default(Text("OK")))
     
 }
