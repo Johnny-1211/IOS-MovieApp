@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct DateView: View {
+    @EnvironmentObject var fireDBHelper : FireDBHelper
+    @Binding var dateSelected: Bool
+    
+    var movieTitle: String = ""
+    var cinema: String = ""
     var date : TicketDate
     var isSelected: Bool
     var onSelect: ((TicketDate)->()) = {_ in }
@@ -34,6 +39,7 @@ struct DateView: View {
         }
         .onTapGesture {
             self.onSelect(date)
+            dateSelected = true
         }
     }
 }

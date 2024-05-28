@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct TimeView: View {
+    @Binding var hourSelected: Bool
+
     var index: Int
     var isSelected: Bool
     var onSelect: ((Int)->()) = {_ in }
@@ -13,6 +15,7 @@ struct TimeView: View {
             .cornerRadius(10)
             .onTapGesture {
                 self.onSelect(self.index)
+                hourSelected = true
             }
             .overlay{
                 RoundedRectangle(cornerRadius: 12)
