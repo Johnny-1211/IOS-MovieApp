@@ -10,49 +10,18 @@ struct MoviesTabView: View {
         
     var body: some View {
         NavigationStack{
-//            ZStack{
-//                Color.clear
-//                    .ignoresSafeArea()
                 TabView(selection: $selectedTab){
                     HomeView(rootScreen: $rootScreen)
                         .tabItem { Label("Home", systemImage: "house").padding(.top, 5) }
                         .tag(0)
                     
-                    SettingListView()
+                    SettingListView(rootScreen: $rootScreen)
                         .tabItem { Label("Account", systemImage: "person").padding(.top, 5) }
                         .tag(1)
                     
                     OrderListView()
                         .tabItem { Label("Order", systemImage: "bag").padding(.top, 5) }
                         .tag(2)
-                }
-                .toolbar {
-                    if selectedTab == 1 {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button{
-                                isLogOut = true
-                            }label:{
-                                HStack{
-                                    Image(systemName: "figure.walk.arrival")
-                                    Text("Log Out")
-                                }
-                                .foregroundStyle(.orange)
-                                .font(.body.bold())
-                                .padding(15)
-                            }
-                            .padding(.vertical, 25)
-                            .alert(isPresented: $isLogOut){
-                                Alert(title: Text("Log Out"),
-                                      message: Text("Do you want to logout?"),
-                                      primaryButton: .default(Text("Log Out")) {
-                                    rootScreen = .Login
-                                    fireAuthHelper.signOut()
-                                },
-                                      secondaryButton: .cancel()
-                                )
-                            }
-                        }
-                    }
                 }
                 .onAppear {
                     let tabBarAppearance = UITabBarAppearance()
@@ -61,7 +30,6 @@ struct MoviesTabView: View {
                 }
                 .environmentObject(fireDBHelper)
                 .environmentObject(fireAuthHelper)
-//            }
         }
     }
 }
