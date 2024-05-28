@@ -42,7 +42,7 @@ struct HomeView: View {
                                                 selectedMovieID = nil
                                                 isShowingDetail = false
                                             }) { identifiableInt in
-                                                DetailView(dismissSheet: $isShowingDetail, movieID: identifiableInt.id)
+                                                DetailView(dismissSheet: $isShowingDetail, selectedMovieID: $selectedMovieID ,movieID: identifiableInt.id)
                                                     .environmentObject(fireDBHelper)
                                             }
                                         }
@@ -95,7 +95,7 @@ struct HomeView: View {
                                                     selectedMovieID = nil
                                                     isShowingDetail = false
                                                 }) { identifiableInt in
-                                                    DetailView(dismissSheet: $isShowingDetail, movieID: identifiableInt.id)
+                                                    DetailView(dismissSheet: $isShowingDetail, selectedMovieID: $selectedMovieID ,movieID: identifiableInt.id)
                                                         .environmentObject(fireDBHelper)
                                                 }
                                             }

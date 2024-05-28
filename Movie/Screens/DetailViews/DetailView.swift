@@ -4,21 +4,9 @@ import SwiftUI
 struct DetailView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
     @Environment(\.presentationMode) var presentationMode
-
-    @State private var cinema = ["Cineplex Cinemas Yorkdale",
-                                 "The Royal","Cineplex Entertainment"]
-    @State private var cinemaAddress = ["3401 Dufferin St, Toronto, ON M6A 2T9",
-                                        "608 College St, Toronto, ON M6G 1B4",
-                                        "1303 Yonge St, Toronto, ON M4T 2Y9"]
-    @State private var selectedItemIndex: Int? = nil
-    @State private var selectedCinema = ""
-    @State private var gradient = [Color.black.opacity(0),Color.black,Color.black,Color.black]
-    
-    @State var imageBaseUrl = "https://image.tmdb.org/t/p/original/"
     @StateObject var viewModel = DetailViewModel()
-    
     @Binding var dismissSheet : Bool
-    
+    @Binding var selectedMovieID: IdentifiableInt?
 
     var movieID : Int = 0
         
@@ -26,14 +14,14 @@ struct DetailView: View {
         NavigationStack{
             ZStack{
                 if let movie = viewModel.movieDetail{
-                    AsyncImage(url: URL(string: imageBaseUrl + (movie.backdrop_path))) { image in
+                    AsyncImage(url: URL(string: viewModel.imageBaseUrl + (movie.backdrop_path))) { image in
                         image
                             .image?.resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxHeight: .infinity, alignment: .top)
                     }
                     VStack{
-                        LinearGradient(colors: gradient, startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: viewModel.gradient, startPoint: .top, endPoint: .bottom)
                             .frame(height: 750)
                     }
                     .frame(maxHeight: .infinity, alignment: .bottom)
@@ -113,7 +101,7 @@ struct DetailView: View {
                                                 Section{
                                                     HStack{
                                                         if let profile = cast.profile_path {
-                                                            AsyncImage(url: URL(string: imageBaseUrl + (profile))) { image in
+                                                            AsyncImage(url: URL(string: viewModel.imageBaseUrl + (profile))) { image in
                                                                 image
                                                                     .image?.resizable()
                                                                     .aspectRatio(contentMode: .fit)
@@ -160,13 +148,13 @@ struct DetailView: View {
                                         .foregroundStyle(.white)
                                     ScrollView(.vertical){
                                         VStack(alignment:.leading){
-                                            ForEach(cinema.indices, id: \.self){ index in
+                                            ForEach(viewModel.cinema.indices, id: \.self){ index in
                                                 VStack(alignment:.leading){
-                                                    Text(cinema[index])
+                                                    Text(viewModel.cinema[index])
                                                         .font(.body.bold())
                                                         .foregroundStyle(.white)
                                                     
-                                                    Text(cinemaAddress[index])
+                                                    Text(viewModel.cinemaAddress[index])
                                                         .font(.body)
                                                         .foregroundStyle(.gray)
                                                 }
@@ -174,14 +162,14 @@ struct DetailView: View {
                                                 .frame(maxWidth: .infinity,
                                                        alignment: .leading)
                                                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                                                .background(self.selectedItemIndex == index ? Color.yellow.opacity(0.3) : Color("SectionColor"))
+                                                .background(viewModel.selectedItemIndex == index ? Color.yellow.opacity(0.3) : Color("SectionColor"))
                                                 .overlay{
                                                     RoundedRectangle(cornerRadius: 12)
-                                                        .stroke(self.selectedItemIndex == index ? Color.yellow : Color("SectionColor"), lineWidth: 4)
+                                                        .stroke(viewModel.selectedItemIndex == index ? Color.yellow : Color("SectionColor"), lineWidth: 4)
                                                 }
                                                 .onTapGesture {
-                                                    selectedItemIndex = index
-                                                    selectedCinema = cinema[index]
+                                                    viewModel.selectedItemIndex = index
+                                                    viewModel.selectedCinema = viewModel.cinema[index]
                                                 }
                                             }
                                             .cornerRadius(12)
@@ -193,7 +181,7 @@ struct DetailView: View {
                         }
                         
                         NavigationLink{
-                            SeatChoiceView(movieDetail: movie, cinema: selectedCinema, dismissSheet: $dismissSheet)
+                            SeatChoiceView(dismissSheet: $dismissSheet, selectedMovieID: $selectedMovieID ,movieDetail: movie, cinema: viewModel.selectedCinema)
                         } label: {
                             ConfirmBtn(text: "Book Now", width: 250, height: 50, top: 10, leading: 0, bottom: 20, trailing: 0)
                         }
@@ -210,7 +198,10 @@ struct DetailView: View {
             .background(.black)
             .ignoresSafeArea()
             .navigationBarBackButtonHidden(true)
-
+            .onAppear{
+                viewModel.selectedItemIndex = nil
+                viewModel.selectedCinema = ""
+            }
         }
     }
 }
