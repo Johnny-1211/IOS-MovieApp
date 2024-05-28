@@ -84,7 +84,6 @@ struct LoginView: View {
                     }
                 }
             } //VStack ends
-            .navigationTitle("Login")
             .navigationBarTitleDisplayMode(.inline)
             
             .onAppear{
