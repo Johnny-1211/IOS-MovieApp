@@ -53,15 +53,15 @@ struct SignUpView: View {
                     
                     Button(action: {
                         if (!self.userName.isEmpty && !self.email.isEmpty && !self.password.isEmpty && !self.confirmPassword.isEmpty){
-                            if (self.password == self.confirmPassword){
-                                self.fireAuthHelper.signUp(userName: self.userName, email: self.email, password: self.confirmPassword)
-                                alertCategory = "registrateSuccess"
-                                showAlert = true
-                                self.rootScreen = .Home
-                                
-                            } else{
-                                alertCategory = "invaildRegistration"
-                                showAlert = true
+                            if self.password.count >= 6{
+                                if (self.password == self.confirmPassword){
+                                    self.fireAuthHelper.signUp(userName: userName, email: email, password: password, showAlert: $showAlert, rootScreen: $rootScreen, alertCategory: $alertCategory)
+                                } else{
+                                    alertCategory = "invaildRegistration"
+                                    showAlert = true
+                                }
+                            }else{
+                                print(#function, "password must be 6 characters long or more")
                             }
                         }else{
                             alertCategory = "emptyField"
