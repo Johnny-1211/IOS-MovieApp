@@ -45,6 +45,9 @@ struct OrderListView: View {
                 }
             }
         }
+        .onAppear{
+            fireDBHelper.getAllMovies()
+        }
         .refreshable {
             fireDBHelper.getAllMovies()
         }
