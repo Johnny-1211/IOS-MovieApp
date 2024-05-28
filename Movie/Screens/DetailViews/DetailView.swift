@@ -194,6 +194,7 @@ struct DetailView: View {
                             viewModel.getMovieDetail(movieID: movieID)
                         }
                 }
+                    
             }
             .background(.black)
             .ignoresSafeArea()
@@ -202,6 +203,12 @@ struct DetailView: View {
                 viewModel.selectedItemIndex = nil
                 viewModel.selectedCinema = ""
             }
+            .alert(item: $viewModel.alertItem) { alertItem in
+                Alert(title: alertItem.title,
+                      message: alertItem.message,
+                      dismissButton: alertItem.dismissButton)
+            }
+            
         }
     }
 }
