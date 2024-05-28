@@ -5,8 +5,6 @@ struct MoviesTabView: View {
     @EnvironmentObject var fireDBHelper : FireDBHelper
     @Binding var rootScreen : RootView
     @State private var selectedTab = 0
-    @State private var isLogOut: Bool = false
-
         
     var body: some View {
         NavigationStack{

@@ -146,7 +146,7 @@ struct HomeView: View {
             }
             
         }
-        .onAppear {
+        .task {
             if rootScreen == .Home{
                 fireDBHelper.getAllMovies()
                 viewModel.getNowPlayingMovie()
