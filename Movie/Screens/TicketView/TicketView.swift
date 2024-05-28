@@ -3,6 +3,7 @@ import SwiftUI
 struct TicketView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var dismissSheet : Bool
+    @Binding var selectedMovieID: IdentifiableInt?
 
     var movieOrder: MovieOrder?
     
@@ -19,11 +20,13 @@ struct TicketView: View {
                         .overlay{
                             Button{
                                 dismissSheet.toggle()
+                                selectedMovieID = nil
                             } label: {
                                 Image(systemName: "multiply")
                                     .foregroundStyle(.white)
                             }
                         }
+                        .offset(y: -20)
                     
                     
                     TopTicketView(movieOrder: movieOrder)

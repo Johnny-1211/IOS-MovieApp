@@ -33,7 +33,6 @@ struct OrderListView: View {
                                 }
                                 .fullScreenCover(isPresented: $isShowingTicket) {
                                     TicketView(dismissSheet: $isShowingTicket, selectedMovieID: $selectedMovieID, movieOrder: currentOrder)
-                                        .background(Color("background"))
                                 }
                             }
                         }
