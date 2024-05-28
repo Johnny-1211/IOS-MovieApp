@@ -71,7 +71,7 @@ struct DetailView: View {
                             }
                         
                         HStack{
-                            ScrollView(.vertical){
+                            ScrollView(.vertical,showsIndicators: false){
                                 VStack(alignment: .leading){
                                     Text("Description")
                                         .font(.title3.bold())
@@ -88,7 +88,7 @@ struct DetailView: View {
                                         .font(.title3.bold())
                                         .foregroundStyle(.white)
                                     
-                                    ScrollView(.horizontal) {
+                                    ScrollView(.horizontal, showsIndicators: false) {
                                         HStack(spacing: 10){
                                             ForEach(viewModel.movieCast, id: \.self){ cast in
                                                 Section{

@@ -152,10 +152,6 @@ struct HomeView: View {
                 viewModel.getNowPlayingMovie()
             }
         }
-        .refreshable {
-            fireDBHelper.getAllMovies()
-            viewModel.getNowPlayingMovie()
-        }
     }
 }
 

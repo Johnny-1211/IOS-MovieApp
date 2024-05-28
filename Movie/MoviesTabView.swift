@@ -17,7 +17,7 @@ struct MoviesTabView: View {
                         .tabItem { Label("Account", systemImage: "person").padding(.top, 5) }
                         .tag(1)
                     
-                    OrderListView()
+                    OrderListView(rootScreen: $rootScreen)
                         .tabItem { Label("Order", systemImage: "bag").padding(.top, 5) }
                         .tag(2)
                 }

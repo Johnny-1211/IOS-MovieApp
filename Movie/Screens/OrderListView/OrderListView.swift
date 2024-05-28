@@ -6,6 +6,7 @@ struct OrderListView: View {
     @State var isActive : Bool = false
     @State private var isShowingTicket = false
     @State private var selectedMovieID : IdentifiableInt?
+    @Binding var rootScreen: RootView
     
     
     var body: some View {
@@ -23,7 +24,7 @@ struct OrderListView: View {
                     .padding(.top,25)
                     .padding(.horizontal, 20)
                     
-                    ScrollView{
+                    ScrollView(.vertical, showsIndicators: false){
                         VStack{
                             ForEach(self.fireDBHelper.movieOrder) { currentOrder in
                                 Button{
@@ -46,10 +47,9 @@ struct OrderListView: View {
             }
         }
         .onAppear{
-            fireDBHelper.getAllMovies()
-        }
-        .refreshable {
-            fireDBHelper.getAllMovies()
+            if rootScreen == .Home{
+                fireDBHelper.getAllMovies()
+            }
         }
     }
 }

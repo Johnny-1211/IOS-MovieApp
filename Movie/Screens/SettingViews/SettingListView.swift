@@ -52,8 +52,12 @@ struct SettingListView: View {
                             Alert(title: Text("Log Out"),
                                   message: Text("Do you want to logout?"),
                                   primaryButton: .default(Text("Log Out")) {
-                                rootScreen = .Login
-                                fireAuthHelper.signOut()
+                                do{
+                                    rootScreen = .Login
+                                    fireAuthHelper.signOut()
+                                }catch let err as NSError{
+                                    print(#function, "Logout error: \(err.localizedDescription)")
+                                }
                             },
                                   secondaryButton: .cancel()
                             )
