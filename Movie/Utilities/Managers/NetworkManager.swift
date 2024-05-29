@@ -6,7 +6,7 @@ import UIKit
 final class NetworkManager {
     static let shared = NetworkManager()
     static let baseURL = "https://api.themoviedb.org/3/movie/"
-    static let apiKey = "ef5aaeb8cc3a509e9fa0d309bcde2999"
+    static let apiKey = "API_KEY"
     var movieID : Int = 0
     
     private let nowplayingMovie = baseURL + "now_playing" + "?api_key=\(apiKey)"
